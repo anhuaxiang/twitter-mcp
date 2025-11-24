@@ -5,15 +5,12 @@ import tweepy
 from typing import Optional, Annotated
 from mcp.server.fastmcp import FastMCP
 
-
 mcp = FastMCP("twitter-mcp")
-
 
 CONSUMER_KEY = os.environ["CONSUMER_KEY"]
 CONSUMER_SECRET = os.environ["CONSUMER_SECRET"]
 ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
 ACCESS_TOKEN_SECRET = os.environ["ACCESS_TOKEN_SECRET"]
-
 
 auth = tweepy.OAuth1UserHandler(
     consumer_key=CONSUMER_KEY,
@@ -22,7 +19,6 @@ auth = tweepy.OAuth1UserHandler(
     access_token_secret=ACCESS_TOKEN_SECRET
 )
 v1_api = tweepy.API(auth)
-
 
 tweet_client = tweepy.Client(
     consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET,
@@ -143,6 +139,81 @@ def get_lasest_tweets_from_user(
     user = tweet_client.get_user(username=username)
     tweets = tweet_client.get_users_tweets(
         id=user.data.id, max_results=max_results
+    )
+    return [tweet.data for tweet in tweets.data]
+
+
+@mcp.tool(description="Delete a tweet on X/Twitter")
+def delete_tweet(
+        tweet_id: Annotated[str, "The ID of the tweet to delete."]
+) -> dict:
+    response = tweet_client.delete_tweet(tweet_id)
+    return response.data
+
+
+@mcp.tool(description="Get tweet by ID on X/Twitter")
+def get_tweet_by_id(
+        tweet_id: Annotated[str, "The ID of the tweet to retrieve."]
+) -> dict:
+    tweet = tweet_client.get_tweet(tweet_id)
+    return tweet.data
+
+
+@mcp.tool(description="Get followers of a user on X/Twitter")
+def get_followers(
+        username: Annotated[str, "The username of the Twitter user."],
+        max_results: Annotated[int, "Maximum number of followers to return."] = 10,
+) -> list:
+    user = tweet_client.get_user(username=username)
+    followers = tweet_client.get_users_followers(
+        id=user.data.id, max_results=max_results,
+    )
+    return [follower.data for follower in followers.data]
+
+
+@mcp.tool(description="Get following of a user on X/Twitter")
+def get_following(
+        username: Annotated[str, "The username of the Twitter user."],
+        max_results: Annotated[int, "Maximum number of following to return."] = 10,
+) -> list:
+    user = tweet_client.get_user(username=username)
+    following = tweet_client.get_users_following(
+        id=user.data.id, max_results=max_results,
+    )
+    return [followed.data for followed in following.data]
+
+
+@mcp.tool(description="Search recent tweets on X/Twitter")
+def search_tweets_by_query(
+        query: Annotated[str, "The search query string."],
+        max_results: Annotated[int, "Maximum number of tweets to return."] =
+        10,
+) -> list:
+    tweets = tweet_client.search_recent_tweets(
+        query=query, max_results=max_results,
+    )
+    return [tweet.data for tweet in tweets.data]
+
+
+@mcp.tool(description="Search all tweets on X/Twitter")
+def search_all_twitter(
+        query: Annotated[str, "The search query string."],
+        max_results: Annotated[int, "Maximum number of tweets to return."] = 10,
+) -> list:
+    tweets = tweet_client.search_all_tweets(
+        query=query, max_results=max_results,
+    )
+    return [tweet.data for tweet in tweets.data]
+
+
+@mcp.tool(description="Get user timeline on X/Twitter")
+def get_user_timeline(
+        username: Annotated[str, "The username of the Twitter user."],
+        max_results: Annotated[int, "Maximum number of tweets to return."] = 5,
+) -> list:
+    user = tweet_client.get_user(username=username)
+    tweets = tweet_client.get_users_tweets(
+        id=user.data.id, max_results=max_results,
     )
     return [tweet.data for tweet in tweets.data]
 

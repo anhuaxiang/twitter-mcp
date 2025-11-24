@@ -1,6 +1,6 @@
 [project]
 name = "twitter-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "A twitter MCP server"
 authors = [
     {name = "yanrujing", email = "rujing.yan@protagonist-ai.com"}
