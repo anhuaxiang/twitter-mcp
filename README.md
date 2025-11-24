@@ -16,7 +16,7 @@ It supports authentication via both Twitter Scraper and Twitter API.
       },
       "command": "uvx",
       "args": [
-        "twitter-mc"
+        "twitter-mcp"
       ]
     }
   }
