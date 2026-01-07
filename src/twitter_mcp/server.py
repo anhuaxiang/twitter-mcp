@@ -4,7 +4,7 @@ import tweepy
 from typing import Optional, Annotated
 
 from mcp.server.fastmcp import FastMCP
-from media import MediaManager
+from .media import MediaManager
 
 mcp = FastMCP("twitter-mcp")
 
