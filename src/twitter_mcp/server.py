@@ -1,10 +1,11 @@
 import os
 import httpx
 import tweepy
-from typing import Optional, Annotated
+from typing import Optional, Annotated, Any
 
 from mcp.server.fastmcp import FastMCP
 from twitter_mcp.media import MediaManager
+from collections.abc import Mapping
 
 mcp = FastMCP("twitter-mcp")
 
@@ -17,10 +18,21 @@ user_client = tweepy.Client(
 media_manager = MediaManager(bearer_token=access_token)
 
 
+
+def serialize_tweet_response(tweet_response) -> dict[Any, dict] | list[dict] | Any:
+    if hasattr(tweet_response, 'data'):
+        tweet_response = tweet_response.data
+    if isinstance(tweet_response, list):
+        return [serialize_tweet_response(item) for item in tweet_response]
+    elif isinstance(tweet_response, Mapping):
+        return {key: serialize_tweet_response(value) for key, value in tweet_response.items()}
+    return tweet_response
+
+
 @mcp.tool(description="Get my X/Twitter user info")
 def get_me() -> dict:
     user = user_client.get_me(user_auth=False)
-    return user.data if hasattr(user, 'data') else user
+    return serialize_tweet_response(user)
 
 @mcp.tool(description="Create new X/Twitter post")
 async def post_twitter(
@@ -45,7 +57,7 @@ async def post_twitter(
     else:
         # 创建纯文本推文
         tweet = user_client.create_tweet(text=post, user_auth=False)
-    return tweet.data if hasattr(tweet, 'data') else tweet
+    return serialize_tweet_response(tweet)
 
 
 @mcp.tool(description="Reply to an existing X/Twitter post")
@@ -59,7 +71,7 @@ async def reply_twitter(
         in_reply_to_tweet_id=tweet_id,
         user_auth=False
     )
-    return tweet.data if hasattr(tweet, 'data') else tweet
+    return serialize_tweet_response(tweet)
 
 
 @mcp.tool(description="Get home timeline tweets from X/Twitter with pagination support")
@@ -109,7 +121,7 @@ def like_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to like."]
 ) -> dict:
     response = user_client.like(tweet_id, user_auth=False)
-    return response.data if hasattr(response, 'data') else response
+    return serialize_tweet_response(response)
 
 
 @mcp.tool(description="Unlike a tweet on X/Twitter")
@@ -117,7 +129,7 @@ def unlike_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to unlike."]
 ) -> dict:
     response = user_client.unlike(tweet_id, user_auth=False)
-    return response.data if hasattr(response, 'data') else response
+    return  serialize_tweet_response(response)
 
 
 @mcp.tool(description="Retweet a tweet on X/Twitter")
@@ -125,7 +137,7 @@ def retweet_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to retweet."]
 ) -> dict:
     response = user_client.retweet(tweet_id, user_auth=False)
-    return response.data if hasattr(response, 'data') else response
+    return  serialize_tweet_response(response)
 
 
 @mcp.tool(description="Unretweet a tweet on X/Twitter")
@@ -133,7 +145,7 @@ def unretweet_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to unretweet."]
 ) -> dict:
     response = user_client.unretweet(tweet_id, user_auth=False)
-    return response.data if hasattr(response, 'data') else response
+    return  serialize_tweet_response(response)
 
 
 @mcp.tool(description="Get user info by username on X/Twitter")
@@ -141,7 +153,7 @@ def get_user_by_username(
         username: Annotated[str, "The username of the Twitter user."]
 ) -> dict:
     user = user_client.get_user(username=username, user_auth=False)
-    return user.data if hasattr(user, 'data') else user
+    return  serialize_tweet_response(user)
 
 
 @mcp.tool(description="Get user info by user ID on X/Twitter")
@@ -149,7 +161,7 @@ def get_user_by_id(
         user_id: Annotated[str, "The user ID of the Twitter user."]
 ) -> dict:
     user = user_client.get_user(id=user_id, user_auth=False)
-    return user.data if hasattr(user, 'data') else user
+    return  serialize_tweet_response(user)
 
 
 @mcp.tool(description="Search recent tweets on X/Twitter with pagination support")
@@ -245,7 +257,7 @@ def delete_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to delete."]
 ) -> dict:
     response = user_client.delete_tweet(tweet_id, user_auth=False)
-    return response.data if hasattr(response, 'data') else response
+    return serialize_tweet_response(response)
 
 
 @mcp.tool(description="Get tweet by ID on X/Twitter with full details")
@@ -312,7 +324,7 @@ def follow_user(
         user_id: Annotated[str, "The user ID of the Twitter user to follow."]
 ) -> dict:
     response = user_client.follow_user(user_id, user_auth=False)
-    return response.data if hasattr(response, 'data') else response
+    return serialize_tweet_response(response)
 
 
 @mcp.tool(description="Unfollow a user on X/Twitter")
@@ -320,7 +332,7 @@ def unfollow_user(
         user_id: Annotated[str, "The user ID of the Twitter user to unfollow."]
 ) -> dict:
     response = user_client.unfollow_user(user_id, user_auth=False)
-    return response.data if hasattr(response, 'data') else response
+    return serialize_tweet_response(response)
 
 
 @mcp.tool(description="Get followers of a user on X/Twitter")
