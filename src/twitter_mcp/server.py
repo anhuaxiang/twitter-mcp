@@ -1,34 +1,25 @@
 import os
-import io
 import httpx
 import tweepy
 from typing import Optional, Annotated
+
 from mcp.server.fastmcp import FastMCP
+from media import MediaManager
 
 mcp = FastMCP("twitter-mcp")
 
-CONSUMER_KEY = os.environ["CONSUMER_KEY"]
-CONSUMER_SECRET = os.environ["CONSUMER_SECRET"]
-ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
-ACCESS_TOKEN_SECRET = os.environ["ACCESS_TOKEN_SECRET"]
+access_token = os.environ["ACCESS_TOKEN"]
 
-auth = tweepy.OAuth1UserHandler(
-    consumer_key=CONSUMER_KEY,
-    consumer_secret=CONSUMER_SECRET,
-    access_token=ACCESS_TOKEN,
-    access_token_secret=ACCESS_TOKEN_SECRET
-)
-v1_api = tweepy.API(auth)
 
-tweet_client = tweepy.Client(
-    consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET,
-    access_token=ACCESS_TOKEN, access_token_secret=ACCESS_TOKEN_SECRET
+user_client = tweepy.Client(
+    bearer_token=access_token
 )
+media_manager = MediaManager(bearer_token=access_token)
 
 
 @mcp.tool(description="Get my X/Twitter user info")
 def get_me() -> dict:
-    user = tweet_client.get_me()
+    user = user_client.get_me(user_auth=False)
     return user.data.data
 
 
@@ -38,14 +29,23 @@ async def post_twitter(
         media_url: Optional[Annotated[str, "URL of media to attach to the post."]] = None
 ) -> dict:
     if media_url:
+        # 从URL下载媒体
         async with httpx.AsyncClient() as client:
             response = await client.get(media_url)
             response.raise_for_status()
-            media_data = io.BytesIO(response.content)
-        media = v1_api.media_upload(filename="media", file=media_data)
-        tweet = tweet_client.create_tweet(text=post, media_ids=[media.media_id_string])
+            media_data = response.content
+            content_type = response.headers.get('content-type', 'image/jpeg')
+
+        # 使用MediaManager上传媒体
+        media_id = media_manager.upload_media_from_bytes(
+            media_data=media_data,
+            media_type=content_type
+        )
+        # 创建带媒体的推文
+        tweet = user_client.create_tweet(text=post, media_ids=[media_id], user_auth=False)
     else:
-        tweet = tweet_client.create_tweet(text=post)
+        # 创建纯文本推文
+        tweet = user_client.create_tweet(text=post, user_auth=False)
     return tweet.data
 
 
@@ -54,10 +54,11 @@ async def reply_twitter(
         post: Annotated[str, "The content of the reply post."],
         tweet_id: Annotated[str, "The ID of the tweet to reply to."]
 ) -> dict:
-    tweet = tweet_client.create_tweet(
+    tweet = user_client.create_tweet(
         text=post,
         quote_tweet_id=tweet_id,
-        in_reply_to_tweet_id=tweet_id
+        in_reply_to_tweet_id=tweet_id,
+        user_auth=False
     )
     return tweet.data
 
@@ -68,8 +69,9 @@ def get_timeline(
         start_time: Optional[Annotated[str, "ISO 8601 start time for fetching tweets."]] = None,
         end_time: Optional[Annotated[str, "ISO 8601 end time for fetching tweets."]] = None
 ):
-    tweets = tweet_client.get_home_timeline(
-        max_results=count, start_time=start_time, end_time=end_time
+    tweets = user_client.get_home_timeline(
+        max_results=count, start_time=start_time, end_time=end_time,
+        user_auth=False
     )
     return [tweet.data for tweet in tweets.data]
 
@@ -78,7 +80,7 @@ def get_timeline(
 def like_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to like."]
 ) -> dict:
-    response = tweet_client.like(tweet_id)
+    response = user_client.like(tweet_id, user_auth=False)
     return response.data
 
 
@@ -86,7 +88,7 @@ def like_tweet(
 def unlike_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to unlike."]
 ) -> dict:
-    response = tweet_client.unlike(tweet_id)
+    response = user_client.unlike(tweet_id, user_auth=False)
     return response.data
 
 
@@ -94,7 +96,7 @@ def unlike_tweet(
 def retweet_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to retweet."]
 ) -> dict:
-    response = tweet_client.retweet(tweet_id)
+    response = user_client.retweet(tweet_id, user_auth=False)
     return response.data
 
 
@@ -102,7 +104,7 @@ def retweet_tweet(
 def unretweet_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to unretweet."]
 ) -> dict:
-    response = tweet_client.unretweet(tweet_id)
+    response = user_client.unretweet(tweet_id, user_auth=False)
     return response.data
 
 
@@ -110,7 +112,7 @@ def unretweet_tweet(
 def get_user_by_username(
         username: Annotated[str, "The username of the Twitter user."]
 ) -> dict:
-    user = tweet_client.get_user(username=username)
+    user = user_client.get_user(username=username, user_auth=False)
     return user.data.data
 
 
@@ -118,7 +120,7 @@ def get_user_by_username(
 def get_user_by_id(
         user_id: Annotated[str, "The user ID of the Twitter user."]
 ) -> dict:
-    user = tweet_client.get_user(id=user_id)
+    user = user_client.get_user(id=user_id, user_auth=False)
     return user.data.data
 
 
@@ -127,18 +129,17 @@ def search_tweets(
         query: Annotated[str, "The search query string."],
         max_results: Annotated[int, "Maximum number of tweets to return."] = 10
 ) -> list:
-    tweets = tweet_client.search_recent_tweets(query=query, max_results=max_results)
+    tweets = user_client.search_recent_tweets(query=query, max_results=max_results, user_auth=False)
     return [tweet.data for tweet in tweets.data]
 
 
 @mcp.tool(description="Get latest tweets from a user on X/Twitter")
 def get_lasest_tweets_from_user(
-        username: Annotated[str, "The username of the Twitter user."],
+        user_id: Annotated[str, "The user ID of the Twitter user."],
         max_results: Annotated[int, "Maximum number of tweets to return."] = 5
 ) -> list:
-    user = tweet_client.get_user(username=username)
-    tweets = tweet_client.get_users_tweets(
-        id=user.data.id, max_results=max_results
+    tweets = user_client.get_users_tweets(
+        id=user_id, max_results=max_results, user_auth=False
     )
     return [tweet.data for tweet in tweets.data]
 
@@ -147,7 +148,7 @@ def get_lasest_tweets_from_user(
 def delete_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to delete."]
 ) -> dict:
-    response = tweet_client.delete_tweet(tweet_id)
+    response = user_client.delete_tweet(tweet_id, user_auth=False)
     return response.data
 
 
@@ -155,44 +156,46 @@ def delete_tweet(
 def get_tweet_by_id(
         tweet_id: Annotated[str, "The ID of the tweet to retrieve."]
 ) -> dict:
-    tweet = tweet_client.get_tweet(tweet_id)
+    tweet = user_client.get_tweet(tweet_id, user_auth=False)
     return tweet.data
+
+
+@mcp.tool(description="Follow a user on X/Twitter")
+def follow_user(
+        user_id: Annotated[str, "The user ID of the Twitter user to follow."]
+) -> dict:
+    response = user_client.follow_user(user_id, user_auth=False)
+    return response.data
+
+
+@mcp.tool(description="Unfollow a user on X/Twitter")
+def unfollow_user(
+        user_id: Annotated[str, "The user ID of the Twitter user to unfollow."]
+) -> dict:
+    response = user_client.unfollow_user(user_id, user_auth=False)
+    return response.data
 
 
 @mcp.tool(description="Get followers of a user on X/Twitter")
 def get_followers(
-        username: Annotated[str, "The username of the Twitter user."],
+        user_id: Annotated[str, "The user ID of the Twitter user."],
         max_results: Annotated[int, "Maximum number of followers to return."] = 10,
 ) -> list:
-    user = tweet_client.get_user(username=username)
-    followers = tweet_client.get_users_followers(
-        id=user.data.id, max_results=max_results,
+    followers = user_client.get_users_followers(
+        id=user_id, max_results=max_results, user_auth=False
     )
     return [follower.data for follower in followers.data]
 
 
 @mcp.tool(description="Get following of a user on X/Twitter")
 def get_following(
-        username: Annotated[str, "The username of the Twitter user."],
+        user_id: Annotated[str, "The user ID of the Twitter user."],
         max_results: Annotated[int, "Maximum number of following to return."] = 10,
 ) -> list:
-    user = tweet_client.get_user(username=username)
-    following = tweet_client.get_users_following(
-        id=user.data.id, max_results=max_results,
+    following = user_client.get_users_following(
+        id=user_id, max_results=max_results, user_auth=False
     )
     return [followed.data for followed in following.data]
-
-
-@mcp.tool(description="Search recent tweets on X/Twitter")
-def search_tweets_by_query(
-        query: Annotated[str, "The search query string."],
-        max_results: Annotated[int, "Maximum number of tweets to return."] =
-        10,
-) -> list:
-    tweets = tweet_client.search_recent_tweets(
-        query=query, max_results=max_results,
-    )
-    return [tweet.data for tweet in tweets.data]
 
 
 @mcp.tool(description="Search all tweets on X/Twitter")
@@ -200,22 +203,11 @@ def search_all_twitter(
         query: Annotated[str, "The search query string."],
         max_results: Annotated[int, "Maximum number of tweets to return."] = 10,
 ) -> list:
-    tweets = tweet_client.search_all_tweets(
-        query=query, max_results=max_results,
+    tweets = user_client.search_all_tweets(
+        query=query, max_results=max_results, user_auth=False
     )
     return [tweet.data for tweet in tweets.data]
 
-
-@mcp.tool(description="Get user timeline on X/Twitter")
-def get_user_timeline(
-        username: Annotated[str, "The username of the Twitter user."],
-        max_results: Annotated[int, "Maximum number of tweets to return."] = 5,
-) -> list:
-    user = tweet_client.get_user(username=username)
-    tweets = tweet_client.get_users_tweets(
-        id=user.data.id, max_results=max_results,
-    )
-    return [tweet.data for tweet in tweets.data]
 
 
 def main():
