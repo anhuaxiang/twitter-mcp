@@ -8,10 +8,11 @@ authors = [
 repository = "https://github.com/protagolabs/exmaple-mcp"
 license = { text = "MIT" }
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11,<4"
 dependencies = [
     "mcp (>=1.6.0,<2.0.0)",
     "tweepy (==4.16.0)",
+    "composio (==0.10.5)",
 ]
 
 packages = [{ include = "src/example_mcp" }]

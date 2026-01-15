@@ -1,0 +1,4092 @@
+{
+  "TWITTER_FETCH_LIST_MEMBERS_BY_ID": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_FETCH_LIST_MEMBERS_BY_ID",
+    "description": "Fetches members of a specific Twitter List, identified by its unique ID.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "A list of fields to expand for each user, such as `pinned_tweet_id` to include the user's pinned Tweet. If an expansion is included, `tweet.fields` can be used to specify which Tweet fields are returned.",
+          "examples": [
+            [
+              "pinned_tweet_id"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation.user_id",
+              "most_recent_tweet_id",
+              "pinned_tweet_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The unique identifier of the Twitter List.",
+          "examples": [
+            "1450500649578020864"
+          ],
+          "type": "string"
+        },
+        "max_results": {
+          "default": 100,
+          "description": "The maximum number of list members to return per page. Values can range from 1 to 100.",
+          "examples": [
+            "100"
+          ],
+          "maximum": 100,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "pagination_token": {
+          "description": "Token for fetching a specific page of results. Obtained from the `next_token` or `previous_token` field in the response's `meta` object.",
+          "examples": [
+            "NEXT_TOKEN_HERE"
+          ],
+          "type": "string"
+        },
+        "tweet_fields": {
+          "description": "A list of Tweet fields to be included if an expansion like `pinned_tweet_id` or `most_recent_tweet_id` is requested. This specifies what details of the expanded Tweet should be returned.",
+          "examples": [
+            [
+              "created_at",
+              "text",
+              "public_metrics"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "article",
+              "attachments",
+              "author_id",
+              "card_uri",
+              "context_annotations",
+              "conversation_id",
+              "created_at",
+              "edit_controls",
+              "edit_history_tweet_ids",
+              "entities",
+              "geo",
+              "id",
+              "in_reply_to_user_id",
+              "lang",
+              "non_public_metrics",
+              "note_tweet",
+              "organic_metrics",
+              "possibly_sensitive",
+              "promoted_metrics",
+              "public_metrics",
+              "referenced_tweets",
+              "reply_settings",
+              "scopes",
+              "source",
+              "text",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "Specifies which additional user details to return for each list member.",
+          "examples": [
+            [
+              "created_at",
+              "description",
+              "public_metrics"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_FETCH_SPACE_TICKET_BUYERS_LIST": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_FETCH_SPACE_TICKET_BUYERS_LIST",
+    "description": "Retrieves a list of users who purchased tickets for a specific, valid, and ticketed Twitter Space.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "Objects to expand in the response for more detailed information (e.g., `pinned_tweet_id` to include the full Tweet object).",
+          "examples": [
+            "pinned_tweet_id",
+            "most_recent_tweet_id"
+          ],
+          "items": {
+            "enum": [
+              "affiliation.user_id",
+              "most_recent_tweet_id",
+              "pinned_tweet_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The unique identifier of the Space for which to retrieve the list of ticket buyers.",
+          "type": "string"
+        },
+        "max_results": {
+          "default": 100,
+          "description": "Maximum number of buyer records to return per page.",
+          "type": "integer"
+        },
+        "pagination_token": {
+          "description": "Token from a previous response to fetch the subsequent page of results.",
+          "type": "string"
+        },
+        "tweet_fields": {
+          "description": "Tweet fields to include when Tweet objects are expanded. Refer to the Tweet object schema for available fields.",
+          "examples": [
+            "id",
+            "text",
+            "created_at",
+            "public_metrics",
+            "author_id"
+          ],
+          "items": {
+            "enum": [
+              "article",
+              "attachments",
+              "author_id",
+              "card_uri",
+              "context_annotations",
+              "conversation_id",
+              "created_at",
+              "edit_controls",
+              "edit_history_tweet_ids",
+              "entities",
+              "geo",
+              "id",
+              "in_reply_to_user_id",
+              "lang",
+              "non_public_metrics",
+              "note_tweet",
+              "organic_metrics",
+              "possibly_sensitive",
+              "promoted_metrics",
+              "public_metrics",
+              "referenced_tweets",
+              "reply_settings",
+              "scopes",
+              "source",
+              "text",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "User fields to include for each buyer, providing additional details. Refer to the User object schema for available fields.",
+          "examples": [
+            "id",
+            "created_at",
+            "public_metrics",
+            "profile_image_url"
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_FULL_ARCHIVE_SEARCH": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_FULL_ARCHIVE_SEARCH",
+    "description": "Searches the full archive of public Tweets from March 2006 onwards; use 'start_time' and 'end_time' together for a defined time window.",
+    "input_schema": {
+      "properties": {
+        "end_time": {
+          "description": "The newest UTC timestamp (YYYY-MM-DDTHH:mm:ssZ) to which Tweets will be provided. Exclusive. Must be at least 10 seconds prior to the current request time. Example: '2021-01-31T23:59:59Z'.",
+          "examples": [
+            "2022-11-30T23:59:59Z"
+          ],
+          "type": "string"
+        },
+        "expansions": {
+          "description": "Specifies which objects to expand in the response for more details.",
+          "examples": [
+            [
+              "author_id",
+              "referenced_tweets.id"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "article.cover_media",
+              "article.media_entities",
+              "attachments.media_keys",
+              "attachments.media_source_tweet",
+              "attachments.poll_ids",
+              "author_id",
+              "edit_history_tweet_ids",
+              "entities.mentions.username",
+              "entities.note.mentions.username",
+              "geo.place_id",
+              "in_reply_to_user_id",
+              "referenced_tweets.id",
+              "referenced_tweets.id.author_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "max_results": {
+          "default": 10,
+          "description": "The maximum number of search results to return per request. Must be between 10 and 500.",
+          "examples": [
+            100
+          ],
+          "maximum": 500,
+          "minimum": 10,
+          "type": "integer"
+        },
+        "media_fields": {
+          "description": "Specifies which media fields to include if 'attachments.media_keys' is expanded.",
+          "examples": [
+            [
+              "url",
+              "preview_image_url",
+              "public_metrics"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "alt_text",
+              "duration_ms",
+              "height",
+              "media_key",
+              "non_public_metrics",
+              "organic_metrics",
+              "preview_image_url",
+              "promoted_metrics",
+              "public_metrics",
+              "type",
+              "url",
+              "variants",
+              "width"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "next_token": {
+          "description": "A token obtained from a previous response's 'meta.next_token' field to retrieve the next page of results. Do not modify this value.",
+          "examples": [
+            "7140dibdnow9c7btw423vh951v5cnqf09hyssx3h"
+          ],
+          "type": "string"
+        },
+        "place_fields": {
+          "description": "Specifies which place fields to include if 'geo.place_id' is expanded.",
+          "examples": [
+            [
+              "full_name",
+              "country",
+              "geo"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "contained_within",
+              "country",
+              "country_code",
+              "full_name",
+              "geo",
+              "id",
+              "name",
+              "place_type"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "poll_fields": {
+          "description": "Specifies which poll fields to include if 'attachments.poll_ids' is expanded.",
+          "examples": [
+            [
+              "duration_minutes",
+              "options",
+              "end_datetime"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "duration_minutes",
+              "end_datetime",
+              "id",
+              "options",
+              "voting_status"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "query": {
+          "description": "The search query or rule to match Tweets. Maximum length varies; refer to Twitter API documentation for details. IMPORTANT: (1) Wildcard characters (*) are NOT supported in search terms (e.g., 'announc*' will fail). Use complete words instead of wildcards, or list multiple variations explicitly (e.g., 'announce OR announced OR announcing'). (2) Standalone '#' characters are invalid - hashtags must have text after the '#' symbol (e.g., '#python' is valid, but '#' alone or 'from:user #' will fail).",
+          "examples": [
+            "#twitterdev OR @twitterdev",
+            "from:twitterdev -is:retweet",
+            "from:username (announce OR announced OR announcing)"
+          ],
+          "type": "string"
+        },
+        "since_id": {
+          "description": "Returns results with a Tweet ID numerically greater (more recent) than the specified ID.",
+          "examples": [
+            "1346889436626259968"
+          ],
+          "type": "string"
+        },
+        "sort_order": {
+          "description": "Specifies the order in which to return results. 'recency' returns the most recent Tweets first, 'relevancy' returns Tweets based on relevance.",
+          "enum": [
+            "recency",
+            "relevancy"
+          ],
+          "examples": [
+            "recency"
+          ],
+          "type": "string"
+        },
+        "start_time": {
+          "description": "The oldest UTC timestamp (YYYY-MM-DDTHH:mm:ssZ) from which Tweets will be provided. Inclusive. Example: '2021-01-01T00:00:00Z'.",
+          "examples": [
+            "2022-11-01T00:00:00Z"
+          ],
+          "type": "string"
+        },
+        "tweet_fields": {
+          "description": "Specifies which Tweet fields to include in the response.",
+          "examples": [
+            [
+              "created_at",
+              "text",
+              "public_metrics"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "article",
+              "attachments",
+              "author_id",
+              "card_uri",
+              "context_annotations",
+              "conversation_id",
+              "created_at",
+              "edit_controls",
+              "edit_history_tweet_ids",
+              "entities",
+              "geo",
+              "id",
+              "in_reply_to_user_id",
+              "lang",
+              "non_public_metrics",
+              "note_tweet",
+              "organic_metrics",
+              "possibly_sensitive",
+              "promoted_metrics",
+              "public_metrics",
+              "referenced_tweets",
+              "reply_settings",
+              "scopes",
+              "source",
+              "text",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "until_id": {
+          "description": "Returns results with a Tweet ID numerically less (older) than the specified ID.",
+          "examples": [
+            "1460323737035677698"
+          ],
+          "type": "string"
+        },
+        "user_fields": {
+          "description": "Additional user object fields to include if 'author_id' or other user-related expansions are used. Note: 'id', 'name', and 'username' are always returned by default for user objects. While these default fields can be included in this parameter, they are redundant since the API returns them automatically.",
+          "examples": [
+            [
+              "public_metrics",
+              "profile_image_url",
+              "created_at"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_FULL_ARCHIVE_SEARCH_COUNTS": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_FULL_ARCHIVE_SEARCH_COUNTS",
+    "description": "Returns a count of Tweets from the full archive that match a specified query, aggregated by day, hour, or minute; `start_time` must be before `end_time` if both are provided, and `since_id`/`until_id` cannot be used with `start_time`/`end_time`.",
+    "input_schema": {
+      "properties": {
+        "end_time": {
+          "description": "Newest UTC timestamp (exclusive, YYYY-MM-DDTHH:mm:ssZ) to count Tweets up to. Must be at least 10 seconds prior to the request time. If specified, `start_time` is also required and `end_time` must be later.",
+          "type": "string"
+        },
+        "granularity": {
+          "default": "hour",
+          "description": "Time period granularity for aggregating search count results.",
+          "enum": [
+            "day",
+            "hour",
+            "minute"
+          ],
+          "examples": [
+            "day",
+            "hour",
+            "minute"
+          ],
+          "type": "string"
+        },
+        "next_token": {
+          "description": "Token from a previous response to fetch the next page of results. Use as-is.",
+          "type": "string"
+        },
+        "pagination_token": {
+          "description": "Pagination token, typically `next_token` in Twitter API v2. Use as-is.",
+          "type": "string"
+        },
+        "query": {
+          "description": "Search query for matching Tweets using Twitter's V2 filtering syntax (see official Twitter API documentation for syntax and length).",
+          "examples": [
+            "(from:twitterdev -is:retweet) OR #twitterapi",
+            "\"exact phrase\" lang:en"
+          ],
+          "type": "string"
+        },
+        "search_count_fields": {
+          "description": "Specifies which fields to return for each search count object; default fields are returned if unspecified.",
+          "examples": [
+            [
+              "start",
+              "tweet_count"
+            ],
+            [
+              "end",
+              "start",
+              "tweet_count"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "end",
+              "start",
+              "tweet_count"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "since_id": {
+          "description": "Count Tweets more recent than this ID. Cannot be used with `start_time` or `end_time`.",
+          "type": "string"
+        },
+        "start_time": {
+          "description": "Oldest UTC timestamp (inclusive, YYYY-MM-DDTHH:mm:ssZ) to count Tweets from. If specified, `end_time` is also required and `start_time` must be earlier.",
+          "type": "string"
+        },
+        "until_id": {
+          "description": "Count Tweets older than this ID. Cannot be used with `start_time` or `end_time`.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_GET_LIST_FOLLOWERS": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_GET_LIST_FOLLOWERS",
+    "description": "Fetches a list of users who follow a specific Twitter List, identified by its ID; ensure the authenticated user has access if the list is private.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "Fields to expand for more detailed information on related entities (e.g., pinned tweets, affiliated users).",
+          "examples": [
+            [
+              "pinned_tweet_id",
+              "affiliation.user_id"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation.user_id",
+              "most_recent_tweet_id",
+              "pinned_tweet_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "Unique identifier of the Twitter List for which to retrieve followers.",
+          "examples": [
+            "1459122346354774019"
+          ],
+          "type": "string"
+        },
+        "max_results": {
+          "default": 100,
+          "description": "Maximum number of user results per page.",
+          "examples": [
+            "50",
+            "100"
+          ],
+          "type": "integer"
+        },
+        "pagination_token": {
+          "description": "Pagination token from a previous response's `next_token` to retrieve the next page.",
+          "examples": [
+            "NEXT_TOKEN"
+          ],
+          "type": "string"
+        },
+        "tweet_fields": {
+          "description": "Tweet fields to include if tweet objects (e.g., pinned_tweet_id) are expanded.",
+          "examples": [
+            [
+              "attachments",
+              "author_id",
+              "created_at",
+              "entities",
+              "id",
+              "text",
+              "public_metrics"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "article",
+              "attachments",
+              "author_id",
+              "card_uri",
+              "context_annotations",
+              "conversation_id",
+              "created_at",
+              "edit_controls",
+              "edit_history_tweet_ids",
+              "entities",
+              "geo",
+              "id",
+              "in_reply_to_user_id",
+              "lang",
+              "non_public_metrics",
+              "note_tweet",
+              "organic_metrics",
+              "possibly_sensitive",
+              "promoted_metrics",
+              "public_metrics",
+              "referenced_tweets",
+              "reply_settings",
+              "scopes",
+              "source",
+              "text",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "User fields to include in the response for additional details on each follower.",
+          "examples": [
+            [
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "name",
+              "pinned_tweet_id",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "url",
+              "verified",
+              "withheld"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_GET_POST_RETWEETERS_ACTION": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_GET_POST_RETWEETERS_ACTION",
+    "description": "Retrieves users who publicly retweeted a specified public Post ID, excluding Quote Tweets and retweets from private accounts.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "Objects to expand and include, such as pinned Tweets of retweeters.",
+          "examples": [
+            [
+              "pinned_tweet_id"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation.user_id",
+              "most_recent_tweet_id",
+              "pinned_tweet_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The unique identifier of the Post (Tweet) for which to retrieve retweeting users. This ID must be for an existing public Post.",
+          "examples": [
+            "1346889436626259968"
+          ],
+          "type": "string"
+        },
+        "max_results": {
+          "default": 100,
+          "description": "Maximum number of user objects per page (1-100, default 100).",
+          "examples": [
+            "50",
+            "100"
+          ],
+          "type": "integer"
+        },
+        "pagination_token": {
+          "description": "A token obtained from a previous response's `meta.next_token` field, used to fetch the next page of results. If not provided, the first page is returned.",
+          "examples": [
+            "NEXT_TOKEN_STRING"
+          ],
+          "type": "string"
+        },
+        "tweet_fields": {
+          "description": "Tweet fields for expanded Tweet objects (e.g., when `expansions` includes 'pinned_tweet_id').",
+          "examples": [
+            [
+              "created_at",
+              "public_metrics",
+              "text"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "article",
+              "attachments",
+              "author_id",
+              "card_uri",
+              "context_annotations",
+              "conversation_id",
+              "created_at",
+              "edit_controls",
+              "edit_history_tweet_ids",
+              "entities",
+              "geo",
+              "id",
+              "in_reply_to_user_id",
+              "lang",
+              "non_public_metrics",
+              "note_tweet",
+              "organic_metrics",
+              "possibly_sensitive",
+              "promoted_metrics",
+              "public_metrics",
+              "referenced_tweets",
+              "reply_settings",
+              "scopes",
+              "source",
+              "text",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "User fields to include for each user who retweeted the Post.",
+          "examples": [
+            [
+              "created_at",
+              "description",
+              "public_metrics",
+              "profile_image_url"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_LIST_LOOKUP_BY_LIST_ID": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_LIST_LOOKUP_BY_LIST_ID",
+    "description": "Returns metadata for a specific Twitter List, identified by its ID; does not return list members but can expand the owner's User object via the `expansions` parameter.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "A list of objects to expand in the response. Currently, the only supported expansion is `owner_id`, which, if included, returns the full User object for the list's owner within an `includes` object in the response.",
+          "examples": [
+            "owner_id"
+          ],
+          "items": {
+            "enum": [
+              "owner_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The unique identifier of the Twitter List to retrieve. This is a numeric string representing the List ID.",
+          "examples": [
+            "1146654567674912769"
+          ],
+          "type": "string"
+        },
+        "list_fields": {
+          "description": "A list of fields to be returned for the List object. Valid fields include `created_at`, `description`, `follower_count`, `id`, `member_count`, `name`, `owner_id`, and `private`. If unspecified, default fields are returned.",
+          "examples": [
+            "created_at",
+            "description",
+            "follower_count",
+            "id",
+            "member_count",
+            "name",
+            "owner_id",
+            "private"
+          ],
+          "items": {
+            "enum": [
+              "created_at",
+              "description",
+              "follower_count",
+              "id",
+              "member_count",
+              "name",
+              "owner_id",
+              "private"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "A list of fields to be returned for User objects if `owner_id` is specified in `expansions`. Valid fields include attributes like `id`, `name`, `username`, `created_at`, `description`, `public_metrics`, etc. If unspecified, default fields are returned for User objects.",
+          "examples": [
+            "created_at",
+            "description",
+            "id",
+            "location",
+            "name",
+            "pinned_tweet_id",
+            "profile_image_url",
+            "protected",
+            "public_metrics",
+            "username",
+            "verified"
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_LIST_POST_LIKERS": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_LIST_POST_LIKERS",
+    "description": "Retrieves users who have liked the Post (Tweet) identified by the provided ID.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "Fields to expand for related objects, like a user's pinned Tweet. Example: ['pinned_tweet_id'].",
+          "examples": [
+            [
+              "pinned_tweet_id"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation.user_id",
+              "most_recent_tweet_id",
+              "pinned_tweet_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The unique identifier of the Post (Tweet) for which to retrieve liking users.",
+          "examples": [
+            "1460323737035677698"
+          ],
+          "type": "string"
+        },
+        "max_results": {
+          "default": 100,
+          "description": "The maximum number of user objects to return per page. The value must be between 1 and 100, inclusive. Defaults to 100 if not specified.",
+          "examples": [
+            50
+          ],
+          "type": "integer"
+        },
+        "pagination_token": {
+          "description": "A token used to request the next page of results if more results are available. This token is returned in the `meta.next_token` field of a previous response.",
+          "examples": [
+            "NEXT_TOKEN"
+          ],
+          "type": "string"
+        },
+        "tweet_fields": {
+          "description": "Tweet fields to retrieve for expanded Tweet objects (e.g., if `expansions` includes `pinned_tweet_id`). Example: ['created_at', 'public_metrics'].",
+          "examples": [
+            [
+              "created_at",
+              "public_metrics"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "article",
+              "attachments",
+              "author_id",
+              "card_uri",
+              "context_annotations",
+              "conversation_id",
+              "created_at",
+              "edit_controls",
+              "edit_history_tweet_ids",
+              "entities",
+              "geo",
+              "id",
+              "in_reply_to_user_id",
+              "lang",
+              "non_public_metrics",
+              "note_tweet",
+              "organic_metrics",
+              "possibly_sensitive",
+              "promoted_metrics",
+              "public_metrics",
+              "referenced_tweets",
+              "reply_settings",
+              "scopes",
+              "source",
+              "text",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "User fields to retrieve for each liking user. Example: ['created_at', 'description'].",
+          "examples": [
+            [
+              "created_at",
+              "description"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "confirmed_email",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "is_identity_verified",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "parody",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_followers_count",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_LIST_POSTS_TIMELINE_BY_LIST_ID": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_LIST_POSTS_TIMELINE_BY_LIST_ID",
+    "description": "Fetches the most recent Tweets posted by members of a specified Twitter List.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "Specifies which related objects to expand and include in the response (e.g., author data, media details).",
+          "examples": [
+            "author_id",
+            "attachments.media_keys",
+            "referenced_tweets.id",
+            "geo.place_id"
+          ],
+          "items": {
+            "enum": [
+              "article.cover_media",
+              "article.media_entities",
+              "attachments.media_keys",
+              "attachments.media_source_tweet",
+              "attachments.poll_ids",
+              "author_id",
+              "author_screen_name",
+              "edit_history_tweet_ids",
+              "entities.mentions.username",
+              "entities.note.mentions.username",
+              "geo.place_id",
+              "in_reply_to_user_id",
+              "referenced_tweets.id",
+              "referenced_tweets.id.author_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The unique identifier of the Twitter List from which to retrieve Tweets.",
+          "examples": [
+            "1455949872148680704"
+          ],
+          "type": "string"
+        },
+        "max_results": {
+          "default": 100,
+          "description": "The maximum number of Tweets to return per request. Must be between 1 and 100.",
+          "maximum": 100,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "media_fields": {
+          "description": "Specifies which Media object fields to include if 'attachments.media_keys' is in 'expansions'.",
+          "examples": [
+            "url",
+            "height",
+            "width",
+            "type",
+            "preview_image_url"
+          ],
+          "items": {
+            "enum": [
+              "alt_text",
+              "duration_ms",
+              "height",
+              "media_key",
+              "non_public_metrics",
+              "organic_metrics",
+              "preview_image_url",
+              "promoted_metrics",
+              "public_metrics",
+              "type",
+              "url",
+              "variants",
+              "width"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "pagination_token": {
+          "description": "A token used to request the next page of results if more Tweets are available. Obtained from the 'next_token' field in a previous response.",
+          "examples": [
+            "7140dibdnow9c7btw423bnr3k0xq1hyrmo13k74vxah3n"
+          ],
+          "type": "string"
+        },
+        "place_fields": {
+          "description": "Specifies which Place object fields to include if 'geo.place_id' is in 'expansions'.",
+          "examples": [
+            "full_name",
+            "country",
+            "geo",
+            "place_type"
+          ],
+          "items": {
+            "enum": [
+              "contained_within",
+              "country",
+              "country_code",
+              "full_name",
+              "geo",
+              "id",
+              "name",
+              "place_type"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "poll_fields": {
+          "description": "Specifies which Poll object fields to include if 'attachments.poll_ids' is in 'expansions'.",
+          "examples": [
+            "id",
+            "options",
+            "voting_status",
+            "end_datetime"
+          ],
+          "items": {
+            "enum": [
+              "duration_minutes",
+              "end_datetime",
+              "id",
+              "options",
+              "voting_status"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tweet_fields": {
+          "description": "Specifies which Tweet object fields to include in the response.",
+          "examples": [
+            "created_at",
+            "author_id",
+            "public_metrics",
+            "entities"
+          ],
+          "items": {
+            "enum": [
+              "article",
+              "attachments",
+              "author_id",
+              "card_uri",
+              "context_annotations",
+              "conversation_id",
+              "created_at",
+              "edit_controls",
+              "edit_history_tweet_ids",
+              "entities",
+              "geo",
+              "id",
+              "in_reply_to_user_id",
+              "lang",
+              "non_public_metrics",
+              "note_tweet",
+              "organic_metrics",
+              "possibly_sensitive",
+              "promoted_metrics",
+              "public_metrics",
+              "referenced_tweets",
+              "reply_settings",
+              "scopes",
+              "source",
+              "text",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "Specifies which User object fields to include if 'author_id' or other user references are in 'expansions'.",
+          "examples": [
+            "public_metrics",
+            "profile_image_url",
+            "verified"
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_POST_LOOKUP_BY_POST_ID": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_POST_LOOKUP_BY_POST_ID",
+    "description": "Fetches comprehensive details for a single Tweet by its unique ID, provided the Tweet exists and is accessible.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "article.cover_media",
+                  "article.media_entities",
+                  "attachments.media_keys",
+                  "attachments.media_source_tweet",
+                  "attachments.poll_ids",
+                  "author_id",
+                  "edit_history_tweet_ids",
+                  "entities.mentions.username",
+                  "entities.note.mentions.username",
+                  "geo.place_id",
+                  "in_reply_to_user_id",
+                  "referenced_tweets.id",
+                  "referenced_tweets.id.author_id"
+                ],
+                "title": "ExpansionsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional data related to the Tweet to include, such as author details, mentioned users, or media information. Accepts a list of expansion names or a comma-separated string.",
+          "examples": [
+            "author_id",
+            "referenced_tweets.id",
+            "attachments.media_keys"
+          ]
+        },
+        "id": {
+          "description": "The unique identifier of the Tweet to retrieve.",
+          "examples": [
+            "1346889436626259968"
+          ],
+          "type": "string"
+        },
+        "media_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "alt_text",
+                  "duration_ms",
+                  "height",
+                  "media_key",
+                  "non_public_metrics",
+                  "organic_metrics",
+                  "preview_image_url",
+                  "promoted_metrics",
+                  "public_metrics",
+                  "type",
+                  "url",
+                  "variants",
+                  "width"
+                ],
+                "title": "MediaFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Media attributes to include if media objects are part of the Tweet or expansions. Accepts a list of field names or a comma-separated string.",
+          "examples": [
+            "media_key",
+            "type",
+            "url",
+            "preview_image_url"
+          ]
+        },
+        "place_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "contained_within",
+                  "country",
+                  "country_code",
+                  "full_name",
+                  "geo",
+                  "id",
+                  "name",
+                  "place_type"
+                ],
+                "title": "PlaceFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Place attributes to include if place objects are part of the Tweet or expansions. Accepts a list of field names or a comma-separated string.",
+          "examples": [
+            "full_name",
+            "country",
+            "geo",
+            "place_type"
+          ]
+        },
+        "poll_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "duration_minutes",
+                  "end_datetime",
+                  "id",
+                  "options",
+                  "voting_status"
+                ],
+                "title": "PollFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Poll attributes to include if poll objects are part of the Tweet or expansions. Accepts a list of field names or a comma-separated string.",
+          "examples": [
+            "id",
+            "options",
+            "voting_status",
+            "end_datetime"
+          ]
+        },
+        "tweet_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "article",
+                  "attachments",
+                  "author_id",
+                  "card_uri",
+                  "context_annotations",
+                  "conversation_id",
+                  "created_at",
+                  "edit_controls",
+                  "edit_history_tweet_ids",
+                  "entities",
+                  "geo",
+                  "id",
+                  "in_reply_to_user_id",
+                  "lang",
+                  "non_public_metrics",
+                  "note_tweet",
+                  "organic_metrics",
+                  "possibly_sensitive",
+                  "promoted_metrics",
+                  "public_metrics",
+                  "referenced_tweets",
+                  "reply_settings",
+                  "scopes",
+                  "source",
+                  "text",
+                  "withheld"
+                ],
+                "title": "TweetFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Tweet attributes to include for additional details about the Tweet. Accepts a list of field names or a comma-separated string.",
+          "examples": [
+            "created_at",
+            "author_id",
+            "public_metrics"
+          ]
+        },
+        "user_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "affiliation",
+                  "connection_status",
+                  "created_at",
+                  "description",
+                  "entities",
+                  "id",
+                  "location",
+                  "most_recent_tweet_id",
+                  "name",
+                  "pinned_tweet_id",
+                  "profile_banner_url",
+                  "profile_image_url",
+                  "protected",
+                  "public_metrics",
+                  "receives_your_dm",
+                  "subscription_type",
+                  "url",
+                  "verified",
+                  "verified_type",
+                  "withheld"
+                ],
+                "title": "UserFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "User attributes to include for user objects (e.g., author, mentions) requested via expansions. Accepts a list of field names or a comma-separated string. NOTE: 'username' is a default field always returned by the API and is not a valid value for this parameter (it will be automatically filtered out if provided).",
+          "examples": [
+            "public_metrics",
+            "profile_image_url",
+            "created_at"
+          ]
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_POST_LOOKUP_BY_POST_IDS": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_POST_LOOKUP_BY_POST_IDS",
+    "description": "Retrieves detailed information for one or more Posts (Tweets) identified by their unique IDs, allowing selection of specific fields and expansions.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "article.cover_media",
+                  "article.media_entities",
+                  "attachments.media_keys",
+                  "attachments.media_source_tweet",
+                  "attachments.poll_ids",
+                  "author_id",
+                  "author_screen_name",
+                  "edit_history_tweet_ids",
+                  "entities.mentions.username",
+                  "entities.note.mentions.username",
+                  "geo.place_id",
+                  "in_reply_to_user_id",
+                  "referenced_tweets.id",
+                  "referenced_tweets.id.author_id"
+                ],
+                "title": "ExpansionsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A comma-separated list of fields to expand in the response for related entities like authors or media. Can be provided as a string (comma-separated) or a list.",
+          "examples": [
+            [
+              "author_id",
+              "attachments.media_keys"
+            ]
+          ]
+        },
+        "ids": {
+          "description": "A list of Post IDs to retrieve. Up to 100 IDs can be specified in a single request. Parameter can be provided as 'ids', 'tweet_ids', or 'post_ids'.",
+          "examples": [
+            [
+              "1346889436626259968",
+              "1293593516030459905"
+            ]
+          ],
+          "items": {
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "media_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "alt_text",
+                  "duration_ms",
+                  "height",
+                  "media_key",
+                  "non_public_metrics",
+                  "organic_metrics",
+                  "preview_image_url",
+                  "promoted_metrics",
+                  "public_metrics",
+                  "type",
+                  "url",
+                  "variants",
+                  "width"
+                ],
+                "title": "MediaFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A comma-separated list of Media fields to include for media attachments. Can be provided as a string (comma-separated) or a list.",
+          "examples": [
+            [
+              "url",
+              "type",
+              "width",
+              "height"
+            ]
+          ]
+        },
+        "place_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "contained_within",
+                  "country",
+                  "country_code",
+                  "full_name",
+                  "geo",
+                  "id",
+                  "name",
+                  "place_type"
+                ],
+                "title": "PlaceFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A comma-separated list of Place fields to include for geo-tagged Tweets. Can be provided as a string (comma-separated) or a list.",
+          "examples": [
+            [
+              "full_name",
+              "geo",
+              "country_code"
+            ]
+          ]
+        },
+        "poll_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "duration_minutes",
+                  "end_datetime",
+                  "id",
+                  "options",
+                  "voting_status"
+                ],
+                "title": "PollFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A comma-separated list of Poll fields to include for poll attachments. Can be provided as a string (comma-separated) or a list.",
+          "examples": [
+            [
+              "options",
+              "duration_minutes",
+              "end_datetime"
+            ]
+          ]
+        },
+        "tweet_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "article",
+                  "attachments",
+                  "author_id",
+                  "card_uri",
+                  "context_annotations",
+                  "conversation_id",
+                  "created_at",
+                  "edit_controls",
+                  "edit_history_tweet_ids",
+                  "entities",
+                  "geo",
+                  "id",
+                  "in_reply_to_user_id",
+                  "lang",
+                  "non_public_metrics",
+                  "note_tweet",
+                  "organic_metrics",
+                  "possibly_sensitive",
+                  "promoted_metrics",
+                  "public_metrics",
+                  "referenced_tweets",
+                  "reply_settings",
+                  "scopes",
+                  "source",
+                  "text",
+                  "withheld"
+                ],
+                "title": "TweetFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A comma-separated list of Tweet fields to include in the response. Can be provided as a string (comma-separated) or a list.",
+          "examples": [
+            [
+              "created_at",
+              "author_id",
+              "public_metrics"
+            ]
+          ]
+        },
+        "user_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "affiliation",
+                  "connection_status",
+                  "created_at",
+                  "description",
+                  "entities",
+                  "id",
+                  "location",
+                  "most_recent_tweet_id",
+                  "name",
+                  "pinned_tweet_id",
+                  "profile_banner_url",
+                  "profile_image_url",
+                  "protected",
+                  "public_metrics",
+                  "receives_your_dm",
+                  "subscription_type",
+                  "url",
+                  "username",
+                  "verified",
+                  "verified_type",
+                  "withheld"
+                ],
+                "title": "UserFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A comma-separated list of User fields to include for user objects. Can be provided as a string (comma-separated) or a list.",
+          "examples": [
+            [
+              "public_metrics",
+              "profile_image_url"
+            ]
+          ]
+        }
+      },
+      "required": [
+        "ids"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_POSTS_LABEL_STREAM": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_POSTS_LABEL_STREAM",
+    "description": "Establishes a persistent stream of real-time events for when Tweet labels are applied or removed, offering insights into content categorization.",
+    "input_schema": {
+      "properties": {
+        "backfill_minutes": {
+          "description": "Number of minutes of historical data (labels applied or removed) to stream upon connection for recent activity; ignored if `start_time` is provided.",
+          "examples": [
+            "5",
+            "10",
+            "30"
+          ],
+          "type": "integer"
+        },
+        "end_time": {
+          "description": "Latest UTC timestamp (YYYY-MM-DDTHH:mm:ssZ) at which the stream will automatically close, ceasing event transmission.",
+          "examples": [
+            "2023-01-01T12:00:00Z",
+            "2024-03-11T00:00:00Z"
+          ],
+          "type": "string"
+        },
+        "start_time": {
+          "description": "Earliest UTC timestamp (YYYY-MM-DDTHH:mm:ssZ) from which to start streaming label events; disregards `backfill_minutes` if provided.",
+          "examples": [
+            "2023-01-01T00:00:00Z",
+            "2024-03-10T12:30:00Z"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "TWITTER_RECENT_SEARCH": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_RECENT_SEARCH",
+    "description": "Searches Tweets from the last 7 days matching a query (using X's search syntax), ideal for real-time analysis, trend monitoring, or retrieving posts from specific users (e.g., `from:username`) DEFAULT FIELDS: Tweet objects always return 'id' and 'text' by default. User objects always return 'id', 'name', and 'username' by default when expanded. Do not request these default fields in field parameters. Example - Get original tweets from Elon Musk since Sept 20, 2025: { \"query\": \"from:elonmusk -is:retweet -is:reply\", \"start_time\": \"2025-09-20T00:00:00Z\", \"max_results\": 50, \"tweet_fields\": [\"created_at\",\"public_metrics\",\"text\"], \"expansions\": [\"author_id\",\"attachments.media_keys\",\"referenced_tweets.id\"] }",
+    "input_schema": {
+      "properties": {
+        "end_time": {
+          "description": "Newest UTC timestamp (YYYY-MM-DDTHH:mm:ssZ) for results; exclusive.",
+          "examples": [
+            "2023-01-02T00:00:00Z"
+          ],
+          "type": "string"
+        },
+        "expansions": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "article.cover_media",
+                  "article.media_entities",
+                  "attachments.media_keys",
+                  "attachments.media_source_tweet",
+                  "attachments.poll_ids",
+                  "author_id",
+                  "edit_history_tweet_ids",
+                  "entities.mentions.username",
+                  "entities.note.mentions.username",
+                  "geo.place_id",
+                  "in_reply_to_user_id",
+                  "referenced_tweets.id",
+                  "referenced_tweets.id.author_id"
+                ],
+                "title": "ExpansionsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Expansions to include additional objects like users, media, polls, etc.",
+          "examples": [
+            [
+              "author_id",
+              "attachments.media_keys"
+            ]
+          ]
+        },
+        "max_results": {
+          "default": 10,
+          "description": "Number of results to return. Twitter API enforces minimum of 10 (values below 10 are auto-adjusted to 10). Maximum 100 per call (automatically paginates internally for higher values up to 2000). If more results exist beyond 2000, check `meta.has_more` from the response and pass `meta.next_token` to `pagination_token` in a new call to continue from that point.",
+          "examples": [
+            10,
+            50,
+            100,
+            500
+          ],
+          "minimum": 10,
+          "type": "integer"
+        },
+        "media_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "alt_text",
+                  "duration_ms",
+                  "height",
+                  "media_key",
+                  "non_public_metrics",
+                  "organic_metrics",
+                  "preview_image_url",
+                  "promoted_metrics",
+                  "public_metrics",
+                  "type",
+                  "url",
+                  "variants",
+                  "width"
+                ],
+                "title": "MediaFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Media fields to include when media keys are expanded.",
+          "examples": [
+            [
+              "url",
+              "preview_image_url",
+              "height",
+              "width"
+            ]
+          ]
+        },
+        "next_token": {
+          "description": "Token from `meta.next_token` of a previous response for pagination; do not modify.",
+          "examples": [
+            "7140dibdnow9c7btw424y0glyzp3gflb1vxotgrg2y829"
+          ],
+          "type": "string"
+        },
+        "pagination_token": {
+          "description": "Alternative pagination token from a previous `meta.next_token`; `next_token` is preferred if both are provided.",
+          "examples": [
+            "7140dibdnow9c7btw424y0glyzp3gflb1vxotgrg2y829"
+          ],
+          "type": "string"
+        },
+        "place_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "contained_within",
+                  "country",
+                  "country_code",
+                  "full_name",
+                  "geo",
+                  "id",
+                  "name",
+                  "place_type"
+                ],
+                "title": "PlaceFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Place fields to include when place IDs are expanded.",
+          "examples": [
+            [
+              "full_name",
+              "country",
+              "geo"
+            ]
+          ]
+        },
+        "poll_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "duration_minutes",
+                  "end_datetime",
+                  "id",
+                  "options",
+                  "voting_status"
+                ],
+                "title": "PollFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Poll fields to include when poll IDs are expanded.",
+          "examples": [
+            [
+              "options",
+              "duration_minutes",
+              "voting_status"
+            ]
+          ]
+        },
+        "query": {
+          "description": "REQUIRED. Search query for matching Tweets. Recent Search limited to last 7 days; for older tweets use Full Archive Search.\n\nCommon operators:\n• Keywords: 'artificial intelligence' (implicit AND)\n• OR: 'AI OR ML' (uppercase required)\n• From user: 'from:username' (do NOT include @ symbol - use 'from:elonmusk' not 'from:@elonmusk')\n• To user: 'to:username' (do NOT include @ symbol)\n• Original posts only: '-is:retweet -is:quote' (excludes retweets AND quote tweets)\n• Exclude replies: '-is:reply'\n• Language: 'lang:en'\n\nElevated-access operators (require Essential or higher access):\n• 'has:video' - Tweets with video attachments\n• 'has:images' - Tweets with image attachments\n• 'has:links' - Tweets containing links\n• 'has:media' - Tweets with any media (videos, images, GIFs)\nNote: These operators will fail with 'Reference to invalid operator' error on Free/Basic tier. If you receive this error, remove these operators from your query.\n\nNote: Unsupported operators (min_retweets, min_faves) are auto-removed.\nNote: Lowercase 'and' is a reserved keyword. It will be auto-quoted to search for the literal word 'and'.\nNote: The @ symbol in from:/to: operators is automatically stripped (from:@user becomes from:user).",
+          "examples": [
+            "from:elonmusk -is:retweet -is:quote -is:reply",
+            "artificial intelligence lang:en -is:retweet -is:quote",
+            "#python programming -is:reply",
+            "(AI OR ML) robotics -is:retweet -is:quote"
+          ],
+          "maxLength": 512,
+          "type": "string"
+        },
+        "since_id": {
+          "description": "Returns Tweets more recent than this ID; cannot be used with `start_time`.",
+          "examples": [
+            "1346889436626259968"
+          ],
+          "type": "string"
+        },
+        "sort_order": {
+          "description": "Order of results: 'recency' (most recent first) or 'relevancy'.",
+          "enum": [
+            "recency",
+            "relevancy"
+          ],
+          "examples": [
+            "recency",
+            "relevancy"
+          ],
+          "type": "string"
+        },
+        "start_time": {
+          "description": "Oldest UTC timestamp (YYYY-MM-DDTHH:mm:ssZ) for results. Must be within last 7 days. For last N hours, calculate from current time (e.g., now-12h = 2025-10-06T03:00:00Z if now is 15:00).",
+          "examples": [
+            "2025-10-05T12:00:00Z"
+          ],
+          "type": "string"
+        },
+        "tweet_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "article",
+                  "attachments",
+                  "author_id",
+                  "card_uri",
+                  "context_annotations",
+                  "conversation_id",
+                  "created_at",
+                  "edit_controls",
+                  "edit_history_tweet_ids",
+                  "entities",
+                  "geo",
+                  "id",
+                  "in_reply_to_user_id",
+                  "lang",
+                  "non_public_metrics",
+                  "note_tweet",
+                  "organic_metrics",
+                  "possibly_sensitive",
+                  "promoted_metrics",
+                  "public_metrics",
+                  "referenced_tweets",
+                  "reply_settings",
+                  "scopes",
+                  "source",
+                  "text",
+                  "withheld"
+                ],
+                "title": "TweetFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional tweet object fields to include in the response.",
+          "examples": [
+            [
+              "created_at",
+              "author_id",
+              "public_metrics"
+            ]
+          ]
+        },
+        "until_id": {
+          "description": "Returns Tweets older than this ID; cannot be used with `end_time`.",
+          "examples": [
+            "1346889436626259960"
+          ],
+          "type": "string"
+        },
+        "user_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "affiliation",
+                  "connection_status",
+                  "created_at",
+                  "description",
+                  "entities",
+                  "id",
+                  "location",
+                  "most_recent_tweet_id",
+                  "name",
+                  "pinned_tweet_id",
+                  "profile_banner_url",
+                  "profile_image_url",
+                  "protected",
+                  "public_metrics",
+                  "receives_your_dm",
+                  "subscription_type",
+                  "url",
+                  "verified",
+                  "verified_type",
+                  "withheld"
+                ],
+                "title": "UserFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional user object fields to include when user IDs are expanded via expansions. Note: 'id', 'name', and 'username' are always returned by default and should not be requested.",
+          "examples": [
+            [
+              "created_at",
+              "verified",
+              "public_metrics"
+            ]
+          ]
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_RECENT_SEARCH_COUNTS": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_RECENT_SEARCH_COUNTS",
+    "description": "Retrieves the count of Tweets matching a specified search query within the last 7 days, aggregated by 'minute', 'hour', or 'day'.",
+    "input_schema": {
+      "properties": {
+        "end_time": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "OPTIONAL: The newest UTC timestamp (exclusive) to which to count Tweets. Must be in ISO 8601 format: YYYY-MM-DDTHH:mm:ssZ. Must be within the last 7 days. If omitted, defaults to now (minus 30 seconds). Do NOT pass placeholder values like '<DATE_TIME>' - either provide a valid timestamp or omit entirely.",
+          "examples": [
+            "2024-12-21T00:00:00Z",
+            "2024-12-21T12:00:00Z"
+          ]
+        },
+        "granularity": {
+          "default": "hour",
+          "description": "The time period granularity for aggregating search counts.",
+          "enum": [
+            "day",
+            "hour",
+            "minute"
+          ],
+          "examples": [
+            "day",
+            "hour",
+            "minute"
+          ],
+          "type": "string"
+        },
+        "next_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A token obtained from a previous response to fetch the next page of results. Do not modify this value.",
+          "examples": [
+            "b26v89c19zqg8o3fosk1i54k92ins3fcg1fg5p3phw9qt"
+          ]
+        },
+        "pagination_token": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A token used for pagination to retrieve the next set of results. This value is obtained from the 'next_token' field in a previous response.",
+          "examples": [
+            "b26v89c19zqg8o3fosk1i54k92ins3fcg1fg5p3phw9qt"
+          ]
+        },
+        "query": {
+          "description": "A search query rule to match against Tweets. For example, '#twitterdev OR @twitterapi'. Refer to Twitter's documentation for query syntax and maximum length: https://developer.twitter.com/en/docs/twitter-api/tweets/search/integrate/build-a-query",
+          "examples": [
+            "#covid19 lang:en",
+            "from:twitterdev -is:retweet"
+          ],
+          "type": "string"
+        },
+        "search_count_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "end",
+                  "start",
+                  "tweet_count"
+                ],
+                "title": "SearchCountFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A list of fields to include in each search count object. Available fields: 'end', 'start', 'tweet_count'. If unspecified, default fields are returned.",
+          "examples": [
+            [
+              "end",
+              "start",
+              "tweet_count"
+            ]
+          ]
+        },
+        "since_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Returns counts for Tweets created more recently than the specified Tweet ID. This helps to paginate results chronologically.",
+          "examples": [
+            "1346889436626259968"
+          ]
+        },
+        "start_time": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "OPTIONAL: The oldest UTC timestamp (inclusive) from which to count Tweets. Must be in ISO 8601 format: YYYY-MM-DDTHH:mm:ssZ. Must be within the last 7 days. If omitted, defaults to 7 days ago. Do NOT pass placeholder values like '<DATE_TIME>' - either provide a valid timestamp or omit entirely.",
+          "examples": [
+            "2024-12-15T00:00:00Z",
+            "2024-12-20T14:30:00Z"
+          ]
+        },
+        "until_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Returns counts for Tweets created older than the specified Tweet ID. This helps to paginate results chronologically.",
+          "examples": [
+            "1346889436626259969"
+          ]
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_RETRIEVE_POSTS_FROM_A_SPACE": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_RETRIEVE_POSTS_FROM_A_SPACE",
+    "description": "Retrieves Tweets from a specified Twitter Space ID; the Space must be accessible and results are batched (not streamed).",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "A list of fields to expand and include additional related objects in the response, such as author details or media attachments. Expanded objects are returned in the 'includes' section of the response.",
+          "examples": [
+            "author_id",
+            "attachments.media_keys",
+            "referenced_tweets.id"
+          ],
+          "items": {
+            "enum": [
+              "article.cover_media",
+              "article.media_entities",
+              "attachments.media_keys",
+              "attachments.media_source_tweet",
+              "attachments.poll_ids",
+              "author_id",
+              "author_screen_name",
+              "edit_history_tweet_ids",
+              "entities.mentions.username",
+              "entities.note.mentions.username",
+              "geo.place_id",
+              "in_reply_to_user_id",
+              "referenced_tweets.id",
+              "referenced_tweets.id.author_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The unique identifier of the Twitter Space from which to retrieve Tweets.",
+          "type": "string"
+        },
+        "max_results": {
+          "default": 100,
+          "description": "The maximum number of Tweets to fetch from the Space per request. Defaults to 100, which is also the maximum allowed.",
+          "examples": [
+            "50",
+            "100"
+          ],
+          "type": "integer"
+        },
+        "media_fields": {
+          "description": "A list of Media fields to be included for media content, if 'attachments.media_keys' is part of 'expansions'.",
+          "examples": [
+            "url",
+            "type",
+            "duration_ms",
+            "public_metrics"
+          ],
+          "items": {
+            "enum": [
+              "alt_text",
+              "duration_ms",
+              "height",
+              "media_key",
+              "non_public_metrics",
+              "organic_metrics",
+              "preview_image_url",
+              "promoted_metrics",
+              "public_metrics",
+              "type",
+              "url",
+              "variants",
+              "width"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "place_fields": {
+          "description": "A list of Place fields to be included for geo-tagged Tweets, if 'geo.place_id' is part of 'expansions'.",
+          "examples": [
+            "full_name",
+            "geo",
+            "country_code",
+            "place_type"
+          ],
+          "items": {
+            "enum": [
+              "contained_within",
+              "country",
+              "country_code",
+              "full_name",
+              "geo",
+              "id",
+              "name",
+              "place_type"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "poll_fields": {
+          "description": "A list of Poll fields to be included for polls, if 'attachments.poll_ids' is part of 'expansions'.",
+          "examples": [
+            "id",
+            "options",
+            "voting_status",
+            "end_datetime"
+          ],
+          "items": {
+            "enum": [
+              "duration_minutes",
+              "end_datetime",
+              "id",
+              "options",
+              "voting_status"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tweet_fields": {
+          "description": "A list of Tweet fields to be included in the response. By default, only 'id' and 'text' are returned for each Tweet.",
+          "examples": [
+            "author_id",
+            "created_at",
+            "public_metrics",
+            "entities"
+          ],
+          "items": {
+            "enum": [
+              "article",
+              "attachments",
+              "author_id",
+              "card_uri",
+              "context_annotations",
+              "conversation_id",
+              "created_at",
+              "edit_controls",
+              "edit_history_tweet_ids",
+              "entities",
+              "geo",
+              "id",
+              "in_reply_to_user_id",
+              "lang",
+              "non_public_metrics",
+              "note_tweet",
+              "organic_metrics",
+              "possibly_sensitive",
+              "promoted_metrics",
+              "public_metrics",
+              "referenced_tweets",
+              "reply_settings",
+              "scopes",
+              "source",
+              "text",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "A list of User fields to be included for user objects, if 'author_id' or other user-related fields are part of 'expansions'.",
+          "examples": [
+            "public_metrics",
+            "profile_image_url",
+            "verified"
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_RETRIEVE_POSTS_THAT_QUOTE_A_POST": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_RETRIEVE_POSTS_THAT_QUOTE_A_POST",
+    "description": "Retrieves Tweets that quote a specified Tweet, requiring a valid Tweet ID.",
+    "input_schema": {
+      "properties": {
+        "exclude": {
+          "description": "Specifies whether to exclude replies or retweets from the results.",
+          "examples": [
+            [
+              "replies"
+            ],
+            [
+              "retweets"
+            ],
+            [
+              "replies",
+              "retweets"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "replies",
+              "retweets"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "expansions": {
+          "description": "Fields to expand in the response, such as 'author_id' to include the author's user object.",
+          "examples": [
+            [
+              "author_id",
+              "referenced_tweets.id"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "article.cover_media",
+              "article.media_entities",
+              "attachments.media_keys",
+              "attachments.media_source_tweet",
+              "attachments.poll_ids",
+              "author_id",
+              "author_screen_name",
+              "edit_history_tweet_ids",
+              "entities.mentions.username",
+              "entities.note.mentions.username",
+              "geo.place_id",
+              "in_reply_to_user_id",
+              "referenced_tweets.id",
+              "referenced_tweets.id.author_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "Unique identifier of the Tweet whose quoting Tweets you would like to retrieve.",
+          "examples": [
+            "1346889436626259968"
+          ],
+          "type": "string"
+        },
+        "max_results": {
+          "default": 10,
+          "description": "Maximum number of results to return per page (range: 10-100).",
+          "examples": [
+            10,
+            50,
+            100
+          ],
+          "type": "integer"
+        },
+        "media_fields": {
+          "description": "Specific Media fields to include in the response if media objects are present.",
+          "examples": [
+            [
+              "url",
+              "preview_image_url"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "alt_text",
+              "duration_ms",
+              "height",
+              "media_key",
+              "non_public_metrics",
+              "organic_metrics",
+              "preview_image_url",
+              "promoted_metrics",
+              "public_metrics",
+              "type",
+              "url",
+              "variants",
+              "width"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "pagination_token": {
+          "description": "Token for retrieving a specific page of results, typically the `next_token` from a previous response.",
+          "examples": [
+            "SDFSFFSUSUHSNF232"
+          ],
+          "type": "string"
+        },
+        "place_fields": {
+          "description": "Specific Place fields to include in the response if place objects are present.",
+          "examples": [
+            [
+              "full_name",
+              "geo"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "contained_within",
+              "country",
+              "country_code",
+              "full_name",
+              "geo",
+              "id",
+              "name",
+              "place_type"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "poll_fields": {
+          "description": "Specific Poll fields to include in the response if poll objects are present.",
+          "examples": [
+            [
+              "options",
+              "duration_minutes"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "duration_minutes",
+              "end_datetime",
+              "id",
+              "options",
+              "voting_status"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tweet_fields": {
+          "description": "Specific Tweet fields to include in the response.",
+          "examples": [
+            [
+              "created_at",
+              "author_id"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "article",
+              "attachments",
+              "author_id",
+              "card_uri",
+              "context_annotations",
+              "conversation_id",
+              "created_at",
+              "edit_controls",
+              "edit_history_tweet_ids",
+              "entities",
+              "geo",
+              "id",
+              "in_reply_to_user_id",
+              "lang",
+              "non_public_metrics",
+              "note_tweet",
+              "organic_metrics",
+              "possibly_sensitive",
+              "promoted_metrics",
+              "public_metrics",
+              "referenced_tweets",
+              "reply_settings",
+              "scopes",
+              "source",
+              "text",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "Specific User fields to include if user objects are present (e.g., through expansions).",
+          "examples": [
+            [
+              "public_metrics"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_RETRIEVE_POSTS_THAT_REPOST_A_POST": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_RETRIEVE_POSTS_THAT_REPOST_A_POST",
+    "description": "Retrieves Tweets that Retweeted a specified public or authenticated-user-accessible Tweet ID, optionally customizing the response with fields and expansions.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "Specifies objects to expand for related data on Retweeting Tweets or their authors (e.g., `author_id`, `referenced_tweets.id`).",
+          "items": {
+            "enum": [
+              "article.cover_media",
+              "article.media_entities",
+              "attachments.media_keys",
+              "attachments.media_source_tweet",
+              "attachments.poll_ids",
+              "author_id",
+              "author_screen_name",
+              "edit_history_tweet_ids",
+              "entities.mentions.username",
+              "entities.note.mentions.username",
+              "geo.place_id",
+              "in_reply_to_user_id",
+              "referenced_tweets.id",
+              "referenced_tweets.id.author_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "The unique identifier of the Tweet for which to retrieve Retweets.",
+          "examples": [
+            "1460323737035677698"
+          ],
+          "type": "string"
+        },
+        "max_results": {
+          "default": 100,
+          "description": "Specifies the maximum number of Retweets to return, between 10 and 100.",
+          "type": "integer"
+        },
+        "media_fields": {
+          "description": "Media fields to include if `expansions` contains `attachments.media_keys`.",
+          "items": {
+            "enum": [
+              "alt_text",
+              "duration_ms",
+              "height",
+              "media_key",
+              "non_public_metrics",
+              "organic_metrics",
+              "preview_image_url",
+              "promoted_metrics",
+              "public_metrics",
+              "type",
+              "url",
+              "variants",
+              "width"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "pagination_token": {
+          "description": "Pagination token from a previous response's `meta.next_token` to request the next page of results.",
+          "examples": [
+            "1sqq1j31u9xwl_AsojKIKxUaUXPNkXqfn6a35Kgm85P1A"
+          ],
+          "type": "string"
+        },
+        "place_fields": {
+          "description": "Place fields to include if `expansions` contains `geo.place_id`.",
+          "items": {
+            "enum": [
+              "contained_within",
+              "country",
+              "country_code",
+              "full_name",
+              "geo",
+              "id",
+              "name",
+              "place_type"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "poll_fields": {
+          "description": "Poll fields to include if `expansions` contains `attachments.poll_ids`.",
+          "items": {
+            "enum": [
+              "duration_minutes",
+              "end_datetime",
+              "id",
+              "options",
+              "voting_status"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tweet_fields": {
+          "description": "Specifies Tweet fields to include for additional information about the Retweeting Tweets.",
+          "items": {
+            "enum": [
+              "article",
+              "attachments",
+              "author_id",
+              "card_uri",
+              "context_annotations",
+              "conversation_id",
+              "created_at",
+              "edit_controls",
+              "edit_history_tweet_ids",
+              "entities",
+              "geo",
+              "id",
+              "in_reply_to_user_id",
+              "lang",
+              "non_public_metrics",
+              "note_tweet",
+              "organic_metrics",
+              "possibly_sensitive",
+              "promoted_metrics",
+              "public_metrics",
+              "referenced_tweets",
+              "reply_settings",
+              "scopes",
+              "source",
+              "text",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "User fields for authors of Retweeting Tweets, applicable if `expansions` includes `author_id`.",
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_SEARCH_FOR_SPACES": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_SEARCH_FOR_SPACES",
+    "description": "Searches for Twitter Spaces by a textual query, optionally filtering by state (live, scheduled, all) to discover audio conversations.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "Specifies fields to expand and include additional related objects (e.g., 'creator_id' for User object, 'host_ids', 'invited_user_ids', 'speaker_ids', 'topic_ids').",
+          "items": {
+            "enum": [
+              "creator_id",
+              "host_ids",
+              "invited_user_ids",
+              "speaker_ids",
+              "topic_ids"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "max_results": {
+          "default": 100,
+          "description": "The maximum number of Space results to return in a single response. Values must be between 1 and 100, inclusive.",
+          "type": "integer"
+        },
+        "query": {
+          "description": "The text query to search for in Space titles and descriptions.",
+          "examples": [
+            "crypto",
+            "live music events",
+            "#TechTalk",
+            "Web3 discussions"
+          ],
+          "type": "string"
+        },
+        "space_fields": {
+          "description": "Specifies fields to include for each Space object (e.g., 'id', 'title'). Omitting this returns a default set of fields.",
+          "items": {
+            "enum": [
+              "created_at",
+              "creator_id",
+              "ended_at",
+              "host_ids",
+              "id",
+              "invited_user_ids",
+              "is_ticketed",
+              "lang",
+              "participant_count",
+              "scheduled_start",
+              "speaker_ids",
+              "started_at",
+              "state",
+              "subscriber_count",
+              "title",
+              "topic_ids",
+              "updated_at"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "state": {
+          "default": "all",
+          "description": "Filters Spaces by their state (e.g., 'live', 'scheduled').",
+          "enum": [
+            "all",
+            "live",
+            "scheduled"
+          ],
+          "type": "string"
+        },
+        "topic_fields": {
+          "description": "Specifies fields for expanded Topic objects (e.g., 'id', 'name'). Omitting this returns a default set of Topic fields.",
+          "items": {
+            "enum": [
+              "description",
+              "id",
+              "name"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "Specifies fields for expanded User objects (e.g., 'username', 'public_metrics'). Omitting this returns a default set of User fields.",
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_SPACE_LOOKUP_BY_SPACE_ID": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_SPACE_LOOKUP_BY_SPACE_ID",
+    "description": "Retrieves details for a Twitter Space by its ID, allowing for customization and expansion of related data, provided the Space ID is valid and accessible.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "Objects to expand in the response (e.g., `creator_id`). Customize with corresponding `*_fields`. See ExpansionsEnm0 for options.",
+          "examples": [
+            [
+              "creator_id",
+              "host_ids"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "creator_id",
+              "host_ids",
+              "invited_user_ids",
+              "speaker_ids",
+              "topic_ids"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id": {
+          "description": "Unique identifier of the Twitter Space to retrieve.",
+          "examples": [
+            "1SLjjRYNejbKM"
+          ],
+          "type": "string"
+        },
+        "space_fields": {
+          "description": "Fields to include for the Space object; defaults to a standard set if omitted. See SpaceFieldsEnm0 for options.",
+          "examples": [
+            [
+              "created_at",
+              "participant_count",
+              "title"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "created_at",
+              "creator_id",
+              "ended_at",
+              "host_ids",
+              "id",
+              "invited_user_ids",
+              "is_ticketed",
+              "lang",
+              "participant_count",
+              "scheduled_start",
+              "speaker_ids",
+              "started_at",
+              "state",
+              "subscriber_count",
+              "title",
+              "topic_ids",
+              "updated_at"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "topic_fields": {
+          "description": "Fields for Topic objects expanded via `expansions` (e.g., if `topic_ids` is expanded). See TopicFieldsEnm0 for options.",
+          "examples": [
+            [
+              "id",
+              "name",
+              "description"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "description",
+              "id",
+              "name"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "Fields for User objects expanded via `expansions` (e.g., if `creator_id` is expanded). See UserFieldsEnm0 for options.",
+          "examples": [
+            [
+              "public_metrics",
+              "profile_image_url"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_SPACE_LOOKUP_BY_THEIR_CREATORS": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_SPACE_LOOKUP_BY_THEIR_CREATORS",
+    "description": "Retrieves Twitter Spaces created by a list of specified User IDs, with options to customize returned data fields.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "Specifies which related objects to expand for more detailed information in the response.",
+          "examples": [
+            "creator_id",
+            "host_ids",
+            "speaker_ids"
+          ],
+          "items": {
+            "enum": [
+              "creator_id",
+              "host_ids",
+              "invited_user_ids",
+              "speaker_ids",
+              "topic_ids"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "space_fields": {
+          "description": "Specifies which fields to return for each Space object.",
+          "examples": [
+            "created_at",
+            "id",
+            "title",
+            "state"
+          ],
+          "items": {
+            "enum": [
+              "created_at",
+              "creator_id",
+              "ended_at",
+              "host_ids",
+              "id",
+              "invited_user_ids",
+              "is_ticketed",
+              "lang",
+              "participant_count",
+              "scheduled_start",
+              "speaker_ids",
+              "started_at",
+              "state",
+              "subscriber_count",
+              "title",
+              "topic_ids",
+              "updated_at"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "topic_fields": {
+          "description": "Specifies which fields to return for Topic objects, applicable when 'topic_ids' is included in 'expansions'.",
+          "examples": [
+            "id",
+            "name",
+            "description"
+          ],
+          "items": {
+            "enum": [
+              "description",
+              "id",
+              "name"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "Specifies which fields to return for User objects, applicable when User-related IDs (e.g., 'creator_id') are included in 'expansions'.",
+          "examples": [
+            "created_at",
+            "description",
+            "public_metrics"
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_ids": {
+          "description": "A list of User IDs whose Spaces will be retrieved. At least one User ID must be provided.",
+          "examples": [
+            "2244994945",
+            "783214"
+          ],
+          "items": {
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "user_ids"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_SPACE_LOOKUP_UP_SPACE_IDS": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_SPACE_LOOKUP_UP_SPACE_IDS",
+    "description": "Fetches detailed information for one or more Twitter Spaces (live, scheduled, or ended) by their unique IDs; at least one Space ID must be provided.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "Objects to expand and include their full details (e.g., 'creator_id', 'host_ids'). See `ExpansionsEnm0` for options.",
+          "examples": [
+            [
+              "creator_id",
+              "host_ids"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "creator_id",
+              "host_ids",
+              "invited_user_ids",
+              "speaker_ids",
+              "topic_ids"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "ids": {
+          "description": "Unique identifiers for the Twitter Spaces to retrieve.",
+          "examples": [
+            [
+              "1SLjjRYNejbKM",
+              "1DXxyRYugenJ"
+            ]
+          ],
+          "items": {
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "space_fields": {
+          "description": "Specific fields to return for each Space object; omits to return default fields. See `SpaceFieldsEnm0` for options.",
+          "examples": [
+            [
+              "created_at",
+              "participant_count",
+              "title"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "created_at",
+              "creator_id",
+              "ended_at",
+              "host_ids",
+              "id",
+              "invited_user_ids",
+              "is_ticketed",
+              "lang",
+              "participant_count",
+              "scheduled_start",
+              "speaker_ids",
+              "started_at",
+              "state",
+              "subscriber_count",
+              "title",
+              "topic_ids",
+              "updated_at"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "topic_fields": {
+          "description": "Specific fields for Topic objects included via expansions (e.g., if 'topic_ids' is in 'expansions'). See `TopicFieldsEnm0` for options.",
+          "examples": [
+            [
+              "id",
+              "name",
+              "description"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "description",
+              "id",
+              "name"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "Specific fields for User objects included via expansions (e.g., if 'creator_id' is in 'expansions'). See `UserFieldsEnm0` for options.",
+          "examples": [
+            [
+              "created_at",
+              "public_metrics"
+            ]
+          ],
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "ids"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_USER_LOOKUP_BY_ID": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_USER_LOOKUP_BY_ID",
+    "description": "Retrieves detailed public information for a Twitter user by their ID, optionally expanding related data (e.g., pinned tweets) and specifying particular user or tweet fields to return.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "affiliation.user_id",
+                  "most_recent_tweet_id",
+                  "pinned_tweet_id"
+                ],
+                "title": "ExpansionsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Linked entities to expand (e.g., `pinned_tweet_id` for the full pinned Tweet). See `ExpansionsEnm0` for options.",
+          "examples": [
+            "pinned_tweet_id",
+            "most_recent_tweet_id"
+          ]
+        },
+        "id": {
+          "description": "The unique numeric identifier (ID) of an existing Twitter/X user. Must be a string of 1-19 digits (e.g., '44196397' for @elonmusk, '12' for @jack). Note: This must be the numeric user ID, NOT the @username handle.",
+          "examples": [
+            "2244994945",
+            "12"
+          ],
+          "pattern": "^[0-9]{1,19}$",
+          "type": "string"
+        },
+        "tweet_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "article",
+                  "attachments",
+                  "author_id",
+                  "card_uri",
+                  "context_annotations",
+                  "conversation_id",
+                  "created_at",
+                  "edit_controls",
+                  "edit_history_tweet_ids",
+                  "entities",
+                  "geo",
+                  "id",
+                  "in_reply_to_user_id",
+                  "lang",
+                  "non_public_metrics",
+                  "note_tweet",
+                  "organic_metrics",
+                  "possibly_sensitive",
+                  "promoted_metrics",
+                  "public_metrics",
+                  "referenced_tweets",
+                  "reply_settings",
+                  "scopes",
+                  "source",
+                  "text",
+                  "withheld"
+                ],
+                "title": "TweetFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Specifies which tweet attributes to return for expanded tweets. See `TweetFieldsEnm0` for options.",
+          "examples": [
+            "created_at",
+            "text",
+            "public_metrics",
+            "attachments"
+          ]
+        },
+        "user_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "affiliation",
+                  "connection_status",
+                  "created_at",
+                  "description",
+                  "entities",
+                  "id",
+                  "location",
+                  "most_recent_tweet_id",
+                  "name",
+                  "pinned_tweet_id",
+                  "profile_banner_url",
+                  "profile_image_url",
+                  "protected",
+                  "public_metrics",
+                  "receives_your_dm",
+                  "subscription_type",
+                  "url",
+                  "username",
+                  "verified",
+                  "verified_type",
+                  "withheld"
+                ],
+                "title": "UserFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Specifies which user attributes to return. See `UserFieldsEnm0` for options.",
+          "examples": [
+            "created_at",
+            "description",
+            "public_metrics",
+            "profile_image_url"
+          ]
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_USER_LOOKUP_BY_IDS": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_USER_LOOKUP_BY_IDS",
+    "description": "Retrieves detailed information for specified X (formerly Twitter) user IDs, optionally customizing returned fields and expanding related entities.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "description": "Objects to expand in the response (e.g., 'pinned_tweet_id'). See ExpansionsEnm0 for options.",
+          "items": {
+            "enum": [
+              "affiliation.user_id",
+              "most_recent_tweet_id",
+              "pinned_tweet_id"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "ids": {
+          "description": "User IDs to retrieve (up to 100 per request). Accepts a list of ID strings (e.g., ['2244994945', '783214']) or a comma-separated string (e.g., '2244994945,783214').",
+          "examples": [
+            [
+              "2244994945",
+              "783214"
+            ],
+            "2244994945,783214"
+          ],
+          "items": {
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "tweet_fields": {
+          "description": "Tweet fields to return for expanded tweet objects. See TweetFieldsEnm0 for options.",
+          "items": {
+            "enum": [
+              "article",
+              "attachments",
+              "author_id",
+              "card_uri",
+              "context_annotations",
+              "conversation_id",
+              "created_at",
+              "edit_controls",
+              "edit_history_tweet_ids",
+              "entities",
+              "geo",
+              "id",
+              "in_reply_to_user_id",
+              "lang",
+              "non_public_metrics",
+              "note_tweet",
+              "organic_metrics",
+              "possibly_sensitive",
+              "promoted_metrics",
+              "public_metrics",
+              "referenced_tweets",
+              "reply_settings",
+              "scopes",
+              "source",
+              "text",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "user_fields": {
+          "description": "Specific user fields to return. See UserFieldsEnm0 for options.",
+          "items": {
+            "enum": [
+              "affiliation",
+              "connection_status",
+              "created_at",
+              "description",
+              "entities",
+              "id",
+              "location",
+              "most_recent_tweet_id",
+              "name",
+              "pinned_tweet_id",
+              "profile_banner_url",
+              "profile_image_url",
+              "protected",
+              "public_metrics",
+              "receives_your_dm",
+              "subscription_type",
+              "url",
+              "username",
+              "verified",
+              "verified_type",
+              "withheld"
+            ],
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "ids"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_USER_LOOKUP_BY_USERNAME": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_USER_LOOKUP_BY_USERNAME",
+    "description": "Fetches public profile information for a valid and existing Twitter user by their username, optionally expanding related data like pinned Tweets; results may be limited for protected profiles not followed by the authenticated user.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "affiliation.user_id",
+                  "most_recent_tweet_id",
+                  "pinned_tweet_id"
+                ],
+                "title": "ExpansionsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Fields to expand for more detailed information on objects like `pinned_tweet_id` (includes full Tweet object).",
+          "examples": [
+            [
+              "pinned_tweet_id",
+              "most_recent_tweet_id"
+            ]
+          ]
+        },
+        "tweet_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "article",
+                  "attachments",
+                  "author_id",
+                  "card_uri",
+                  "context_annotations",
+                  "conversation_id",
+                  "created_at",
+                  "edit_controls",
+                  "edit_history_tweet_ids",
+                  "entities",
+                  "geo",
+                  "id",
+                  "in_reply_to_user_id",
+                  "lang",
+                  "non_public_metrics",
+                  "note_tweet",
+                  "organic_metrics",
+                  "possibly_sensitive",
+                  "promoted_metrics",
+                  "public_metrics",
+                  "referenced_tweets",
+                  "reply_settings",
+                  "scopes",
+                  "source",
+                  "text",
+                  "withheld"
+                ],
+                "title": "TweetFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional tweet object fields to include for Tweets returned via expansions (e.g., `pinned_tweet_id`). Note: 'id' and 'text' are always returned by default for tweet objects and should not be specified here.",
+          "examples": [
+            [
+              "created_at",
+              "public_metrics",
+              "author_id"
+            ]
+          ]
+        },
+        "user_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "affiliation",
+                  "connection_status",
+                  "created_at",
+                  "description",
+                  "entities",
+                  "id",
+                  "location",
+                  "most_recent_tweet_id",
+                  "name",
+                  "pinned_tweet_id",
+                  "profile_banner_url",
+                  "profile_image_url",
+                  "protected",
+                  "public_metrics",
+                  "receives_your_dm",
+                  "subscription_type",
+                  "url",
+                  "username",
+                  "verified",
+                  "verified_type",
+                  "withheld"
+                ],
+                "title": "UserFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Additional user object fields to include in the response. Note: 'id', 'name', and 'username' are always returned by default for user objects and should not be specified here.",
+          "examples": [
+            [
+              "created_at",
+              "description",
+              "public_metrics",
+              "profile_image_url",
+              "verified_type"
+            ]
+          ]
+        },
+        "username": {
+          "description": "Twitter username (handle), without '@'. Must match ^[A-Za-z0-9_]{1,15}$ (letters, numbers, underscore only; 1–15 chars). Leading '@' is ignored. Note: This endpoint accepts only a single username. For batch lookup of multiple usernames, use USER_LOOKUP_BY_USERNAMES action.",
+          "examples": [
+            "TwitterDev",
+            "elonmusk",
+            "jack"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "username"
+      ],
+      "type": "object"
+    }
+  },
+  "TWITTER_USER_LOOKUP_BY_USERNAMES": {
+    "toolkit": "TWITTER",
+    "tool_slug": "TWITTER_USER_LOOKUP_BY_USERNAMES",
+    "description": "Retrieves detailed information for 1 to 100 Twitter users by their usernames (each 1-15 alphanumeric characters/underscores), allowing customizable user/tweet fields and expansion of related data like pinned tweets.",
+    "input_schema": {
+      "properties": {
+        "expansions": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "affiliation.user_id",
+                  "most_recent_tweet_id",
+                  "pinned_tweet_id"
+                ],
+                "title": "ExpansionsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A list of objects to expand in the response, providing more detailed information. For example, 'pinned_tweet_id' will include the full Tweet object for a user's pinned Tweet.",
+          "examples": [
+            [
+              "pinned_tweet_id"
+            ]
+          ]
+        },
+        "tweet_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "article",
+                  "attachments",
+                  "author_id",
+                  "card_uri",
+                  "context_annotations",
+                  "conversation_id",
+                  "created_at",
+                  "edit_controls",
+                  "edit_history_tweet_ids",
+                  "entities",
+                  "geo",
+                  "id",
+                  "in_reply_to_user_id",
+                  "lang",
+                  "non_public_metrics",
+                  "note_tweet",
+                  "organic_metrics",
+                  "possibly_sensitive",
+                  "promoted_metrics",
+                  "public_metrics",
+                  "referenced_tweets",
+                  "reply_settings",
+                  "scopes",
+                  "source",
+                  "text",
+                  "withheld"
+                ],
+                "title": "TweetFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A list of tweet fields to include in the response if 'expansions' includes 'pinned_tweet_id'. These fields provide additional information about the pinned tweet.",
+          "examples": [
+            [
+              "created_at",
+              "id",
+              "text",
+              "public_metrics"
+            ]
+          ]
+        },
+        "user_fields": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "affiliation",
+                  "confirmed_email",
+                  "connection_status",
+                  "created_at",
+                  "description",
+                  "entities",
+                  "id",
+                  "is_identity_verified",
+                  "location",
+                  "most_recent_tweet_id",
+                  "name",
+                  "parody",
+                  "pinned_tweet_id",
+                  "profile_banner_url",
+                  "profile_image_url",
+                  "protected",
+                  "public_metrics",
+                  "receives_your_dm",
+                  "subscription",
+                  "subscription_type",
+                  "url",
+                  "username",
+                  "verified",
+                  "verified_followers_count",
+                  "verified_type",
+                  "withheld"
+                ],
+                "title": "UserFieldsEnm0",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "A list of user fields to include in the response. By default, the API returns 'id', 'name', and 'username' fields. Specify additional fields here to include them in the response.",
+          "examples": [
+            [
+              "created_at",
+              "description",
+              "profile_image_url",
+              "public_metrics",
+              "verified"
+            ]
+          ]
+        },
+        "usernames": {
+          "description": "A list of Twitter/X usernames (handles) to look up (1-100 usernames). Valid Twitter usernames contain only letters (A-Z), numbers (0-9), and underscores (_), with a maximum length of 15 characters. Leading '@' symbols are automatically stripped. Invalid usernames will result in errors from the API.",
+          "examples": [
+            [
+              "twitterdev",
+              "TwitterAPI",
+              "jack"
+            ]
+          ],
+          "items": {
+            "properties": {},
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "usernames"
+      ],
+      "type": "object"
+    }
+  }
+}
