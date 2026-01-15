@@ -335,55 +335,55 @@ def unfollow_user(
     return serialize_tweet_response(response)
 
 
-@mcp.tool(description="Get followers of a user on X/Twitter")
-def get_followers(
-        user_id: Annotated[str, "The user ID of the Twitter user."],
-        max_results: Annotated[int, "Maximum number of followers to return."] = 10,
-) -> dict:
-    followers = user_client.get_users_followers(
-        id=user_id, max_results=max_results, user_auth=False
-    )
-    # 构建结果，确保数据是字典格式
-    result = {}
-    if hasattr(followers, 'data') and followers.data:
-        result["data"] = [user.data for user in followers.data]
-    if hasattr(followers, 'meta') and followers.meta:
-        result["meta"] = followers.meta
-    return result
-
-
-@mcp.tool(description="Get following of a user on X/Twitter")
-def get_following(
-        user_id: Annotated[str, "The user ID of the Twitter user."],
-        max_results: Annotated[int, "Maximum number of following to return."] = 10,
-) -> dict:
-    following = user_client.get_users_following(
-        id=user_id, max_results=max_results, user_auth=False
-    )
-    # 构建结果，确保数据是字典格式
-    result = {}
-    if hasattr(following, 'data') and following.data:
-        result["data"] = [user.data for user in following.data]
-    if hasattr(following, 'meta') and following.meta:
-        result["meta"] = following.meta
-    return result
-
-
-@mcp.tool(description="Search all tweets on X/Twitter")
-def search_all_twitter(
-        query: Annotated[str, "The search query string."],
-        max_results: Annotated[int, "Maximum number of tweets to return."] = 10,
-) -> dict:
-    tweets = user_client.search_all_tweets(
-        query=query, max_results=max_results, user_auth=False
-    )
-    # 构建结果，确保数据是字典格式
-    result = {}
-    if hasattr(tweets, 'data') and tweets.data:
-        result["data"] = [tweet.data for tweet in tweets.data]
-    if hasattr(tweets, 'meta') and tweets.meta:
-        result["meta"] = tweets.meta
-    return result
+# @mcp.tool(description="Get followers of a user on X/Twitter")
+# def get_followers(
+#         user_id: Annotated[str, "The user ID of the Twitter user."],
+#         max_results: Annotated[int, "Maximum number of followers to return."] = 10,
+# ) -> dict:
+#     followers = user_client.get_users_followers(
+#         id=user_id, max_results=max_results, user_auth=False
+#     )
+#     # 构建结果，确保数据是字典格式
+#     result = {}
+#     if hasattr(followers, 'data') and followers.data:
+#         result["data"] = [user.data for user in followers.data]
+#     if hasattr(followers, 'meta') and followers.meta:
+#         result["meta"] = followers.meta
+#     return result
+#
+#
+# @mcp.tool(description="Get following of a user on X/Twitter")
+# def get_following(
+#         user_id: Annotated[str, "The user ID of the Twitter user."],
+#         max_results: Annotated[int, "Maximum number of following to return."] = 10,
+# ) -> dict:
+#     following = user_client.get_users_following(
+#         id=user_id, max_results=max_results, user_auth=False
+#     )
+#     # 构建结果，确保数据是字典格式
+#     result = {}
+#     if hasattr(following, 'data') and following.data:
+#         result["data"] = [user.data for user in following.data]
+#     if hasattr(following, 'meta') and following.meta:
+#         result["meta"] = following.meta
+#     return result
+#
+#
+# @mcp.tool(description="Search all tweets on X/Twitter")
+# def search_all_twitter(
+#         query: Annotated[str, "The search query string."],
+#         max_results: Annotated[int, "Maximum number of tweets to return."] = 10,
+# ) -> dict:
+#     tweets = user_client.search_all_tweets(
+#         query=query, max_results=max_results, user_auth=False
+#     )
+#     # 构建结果，确保数据是字典格式
+#     result = {}
+#     if hasattr(tweets, 'data') and tweets.data:
+#         result["data"] = [tweet.data for tweet in tweets.data]
+#     if hasattr(tweets, 'meta') and tweets.meta:
+#         result["meta"] = tweets.meta
+#     return result
 
 
 
