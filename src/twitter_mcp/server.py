@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import httpx
 import asyncio
@@ -12,9 +13,18 @@ from mcp.server.stdio import stdio_server
 from mcp.client.streamable_http import streamable_http_client
 
 
+def get_env_var(name: str) -> str:
+    """获取环境变量，如果不存在则提供友好的错误提示"""
+    value = os.environ.get(name)
+    if value is None:
+        print(f"Error: Required environment variable '{name}' is not set.", file=sys.stderr)
+        print(f"Please set it by running: export {name}=<your-value>", file=sys.stderr)
+        sys.exit(1)
+    return value
 
-COMPOSIO_API_KEY = os.environ['COMPOSIO_API_KEY']
-COMPOSIO_MCP_URl = os.environ['COMPOSIO_MCP_URL']
+
+COMPOSIO_API_KEY = get_env_var('COMPOSIO_API_KEY')
+COMPOSIO_MCP_URL = get_env_var('COMPOSIO_MCP_URL')
 
 
 composio = Composio(api_key=COMPOSIO_API_KEY)
@@ -25,9 +35,14 @@ class MCPSessionManager:
     def __init__(self):
         self.http_client = httpx.AsyncClient(
             headers={"x-api-key": COMPOSIO_API_KEY},
-            timeout=httpx.Timeout(180),
+            timeout=httpx.Timeout(
+                connect=10.0,   # 连接超时：10秒
+                read=None,      # 读取超时：无限制（适用于 SSE/长连接）
+                write=30.0,     # 写入超时：30秒
+                pool=None       # 连接池超时：无限制
+            ),
         )
-        self.url = COMPOSIO_MCP_URl
+        self.url = COMPOSIO_MCP_URL
         self._client_cm = None
         self.session: ClientSession | None = None
 
@@ -44,14 +59,24 @@ class MCPSessionManager:
             await self.session.__aexit__(None, None, None)
         if self._client_cm:
             await self._client_cm.__aexit__(None, None, None)
+        if self.http_client:
+            await self.http_client.aclose()
 
 
 mcp_manager = MCPSessionManager()
 
 
-
-with open(os.path.join(os.path.dirname(__file__), "tool_schema.json")) as f:
-    tool_schemas = json.load(f)
+# Load tool schemas
+tool_schema_path = os.path.join(os.path.dirname(__file__), "tool_schema.json")
+try:
+    with open(tool_schema_path) as f:
+        tool_schemas = json.load(f)
+except FileNotFoundError:
+    print(f"Error: Tool schema file not found at {tool_schema_path}", file=sys.stderr)
+    sys.exit(1)
+except json.JSONDecodeError as e:
+    print(f"Error: Failed to parse tool schema JSON: {e}", file=sys.stderr)
+    sys.exit(1)
 
 
 @mcp.list_tools()
@@ -70,6 +95,10 @@ async def list_tools() -> Any:
 async def call_tool(name: str, arguments: dict[str, Any]):
     if name not in tool_schemas:
         raise ValueError(f"Unknown tool: {name}")
+
+    if mcp_manager.session is None:
+        raise RuntimeError("MCP session is not initialized. Please ensure the server is started properly.")
+
     res = await mcp_manager.session.call_tool(
         name="COMPOSIO_MULTI_EXECUTE_TOOL",
         arguments={
@@ -86,14 +115,16 @@ async def call_tool(name: str, arguments: dict[str, Any]):
 
 
 async def run_server():
-    await mcp_manager.start()
-    async with stdio_server() as (read_stream, write_stream):
-        await mcp.run(
-            read_stream=read_stream,
-            write_stream=write_stream,
-            initialization_options=mcp.create_initialization_options()
-        )
-    await mcp_manager.stop()
+    try:
+        await mcp_manager.start()
+        async with stdio_server() as (read_stream, write_stream):
+            await mcp.run(
+                read_stream=read_stream,
+                write_stream=write_stream,
+                initialization_options=mcp.create_initialization_options()
+            )
+    finally:
+        await mcp_manager.stop()
 
 
 def main():
