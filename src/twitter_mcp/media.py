@@ -2,6 +2,7 @@ import os
 import requests
 from typing import Optional, Tuple
 import mimetypes
+import time
 
 
 class MediaManager:
@@ -176,7 +177,7 @@ class MediaManager:
 
     def _finalize_upload(self, media_id: str):
         """
-        完成上传
+        完成上传并等待处理完成
 
         Args:
             media_id: 媒体ID
@@ -188,6 +189,76 @@ class MediaManager:
 
         if response.status_code != 200:
             raise Exception(f"完成上传失败: {response.status_code}, {response.text}")
+
+        # 检查响应中是否有 processing_info
+        response_data = response.json().get('data', {})
+        processing_info = response_data.get('processing_info')
+
+        if processing_info:
+            # 需要等待媒体处理完成
+            self._wait_for_processing(media_id, processing_info)
+
+    def _wait_for_processing(self, media_id: str, initial_processing_info: dict, max_wait_seconds: int = 300):
+        """
+        等待媒体处理完成,使用正确的 X API v2 STATUS 端点轮询
+
+        Args:
+            media_id: 媒体ID
+            initial_processing_info: finalize 响应中的初始 processing_info
+            max_wait_seconds: 最大等待时间（秒），默认5分钟
+
+        Raises:
+            Exception: 如果处理失败或超时
+        """
+        start_time = time.time()
+
+        # 检查初始状态
+        state = initial_processing_info.get('state')
+        if state == 'succeeded':
+            return
+        elif state == 'failed':
+            error = initial_processing_info.get('error', {})
+            raise Exception(f"媒体处理失败: {error}")
+
+        # 获取建议的检查间隔
+        check_after_secs = initial_processing_info.get('check_after_secs', 1)
+        time.sleep(check_after_secs)
+
+        # 使用正确的 X API v2 STATUS 端点轮询
+        while time.time() - start_time < max_wait_seconds:
+            response = requests.get(
+                "https://api.x.com/2/media/upload",
+                params={
+                    'command': 'STATUS',
+                    'media_id': media_id
+                },
+                headers=self.headers
+            )
+
+            if response.status_code != 200:
+                raise Exception(f"查询媒体状态失败: {response.status_code}, {response.text}")
+
+            # 注意: processing_info 在 data 字段里面
+            response_data = response.json()
+            data = response_data.get('data', {})
+            processing_info = data.get('processing_info', {})
+            state = processing_info.get('state')
+
+            if state == 'succeeded':
+                # 处理成功，返回
+                return
+            elif state == 'failed':
+                error = processing_info.get('error', {})
+                raise Exception(f"媒体处理失败: {error}")
+            elif state in ['pending', 'in_progress']:
+                # 仍在处理中，按照Twitter建议的间隔继续等待
+                check_after_secs = processing_info.get('check_after_secs', 1)
+                time.sleep(check_after_secs)
+            else:
+                # 未知状态，等待1秒后重试
+                time.sleep(1)
+
+        raise Exception(f"等待媒体处理超时（{max_wait_seconds}秒）")
 
     def upload_media_from_bytes(self, media_data: bytes, media_type: str, filename: str = "media") -> str:
         """
