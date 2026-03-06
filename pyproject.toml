@@ -12,6 +12,7 @@ requires-python = ">=3.11"
 dependencies = [
     "mcp (>=1.6.0,<2.0.0)",
     "tweepy (==4.16.0)",
+    "twitter-text-parser (>=3.0.0)",
 ]
 
 packages = [{ include = "src/example_mcp" }]

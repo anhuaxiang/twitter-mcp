@@ -2,10 +2,13 @@ import os
 import httpx
 import tweepy
 from typing import Optional, Annotated, Any
+from twitter_text import parse_tweet
 
 from mcp.server.fastmcp import FastMCP
 from twitter_mcp.media import MediaManager
 from collections.abc import Mapping
+
+MAX_WEIGHTED_LENGTH = 280
 
 mcp = FastMCP("twitter-mcp")
 
@@ -34,11 +37,20 @@ def get_me() -> dict:
     user = user_client.get_me(user_auth=False)
     return serialize_tweet_response(user)
 
-@mcp.tool(description="Create new X/Twitter post")
+@mcp.tool(description="Create new X/Twitter post. Note: posts cannot exceed 280 weighted characters (CJK/emoji count as 2, URLs count as 23).")
 async def post_twitter(
-        post: Annotated[str, "The content of the Twitter post to be created."],
+        post: Annotated[str, "The content of the Twitter post to be created. Must not exceed 280 weighted characters."],
         media_url: Optional[Annotated[str, "URL of media to attach to the post."]] = None
 ) -> dict:
+    result = parse_tweet(post)
+    if not result.valid:
+        over = result.weightedLength - MAX_WEIGHTED_LENGTH
+        raise ValueError(
+            f"Tweet exceeds the maximum length of {MAX_WEIGHTED_LENGTH} weighted characters. "
+            f"Current weighted length: {result.weightedLength} (over by {over}). "
+            f"Valid range: [{result.validRangeStart}:{result.validRangeEnd}]. "
+            f"CJK characters and emojis count as 2, URLs count as 23."
+        )
     if media_url:
         # 从URL下载媒体
         async with httpx.AsyncClient() as client:
@@ -60,11 +72,20 @@ async def post_twitter(
     return serialize_tweet_response(tweet)
 
 
-@mcp.tool(description="Reply to an existing X/Twitter post")
+@mcp.tool(description="Reply to an existing X/Twitter post. Note: replies cannot exceed 280 weighted characters.")
 async def reply_twitter(
-        post: Annotated[str, "The content of the reply post."],
+        post: Annotated[str, "The content of the reply post. Must not exceed 280 weighted characters."],
         tweet_id: Annotated[str, "The ID of the tweet to reply to."]
 ) -> dict:
+    result = parse_tweet(post)
+    if not result.valid:
+        over = result.weightedLength - MAX_WEIGHTED_LENGTH
+        raise ValueError(
+            f"Reply exceeds the maximum length of {MAX_WEIGHTED_LENGTH} weighted characters. "
+            f"Current weighted length: {result.weightedLength} (over by {over}). "
+            f"Valid range: [{result.validRangeStart}:{result.validRangeEnd}]. "
+            f"CJK characters and emojis count as 2, URLs count as 23."
+        )
     tweet = user_client.create_tweet(
         text=post,
         quote_tweet_id=tweet_id,
