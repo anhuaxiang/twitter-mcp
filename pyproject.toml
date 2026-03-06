@@ -13,7 +13,7 @@ dependencies = [
     "mcp (>=1.6.0,<2.0.0)",
     "tweepy (==4.16.0)",
     "twitter-text-parser (>=3.0.0,<4.0.0)",
-    "setuptools (>=82.0.0,<83.0.0)"
+    "setuptools (<81.0.0)"
 ]
 
 packages = [{ include = "src/example_mcp" }]
@@ -26,4 +26,3 @@ twitter-mcp = "twitter_mcp:main"
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
-
