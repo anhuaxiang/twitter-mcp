@@ -4,30 +4,60 @@ import httpx
 import tweepy
 from typing import Optional, Annotated
 from mcp.server.fastmcp import FastMCP
+from twitter_mcp.xquik import (
+    get_xquik_tweet,
+    get_xquik_user_tweets,
+    search_xquik_tweets,
+    xquik_enabled,
+)
 
 mcp = FastMCP("twitter-mcp")
 
-CONSUMER_KEY = os.environ["CONSUMER_KEY"]
-CONSUMER_SECRET = os.environ["CONSUMER_SECRET"]
-ACCESS_TOKEN = os.environ["ACCESS_TOKEN"]
-ACCESS_TOKEN_SECRET = os.environ["ACCESS_TOKEN_SECRET"]
-
-auth = tweepy.OAuth1UserHandler(
-    consumer_key=CONSUMER_KEY,
-    consumer_secret=CONSUMER_SECRET,
-    access_token=ACCESS_TOKEN,
-    access_token_secret=ACCESS_TOKEN_SECRET
+TWITTER_ENV_NAMES = (
+    "CONSUMER_KEY",
+    "CONSUMER_SECRET",
+    "ACCESS_TOKEN",
+    "ACCESS_TOKEN_SECRET",
 )
-v1_api = tweepy.API(auth)
 
-tweet_client = tweepy.Client(
-    consumer_key=CONSUMER_KEY, consumer_secret=CONSUMER_SECRET,
-    access_token=ACCESS_TOKEN, access_token_secret=ACCESS_TOKEN_SECRET
-)
+_v1_api: tweepy.API | None = None
+_tweet_client: tweepy.Client | None = None
+
+
+def _twitter_env() -> dict[str, str]:
+    values = {name: os.getenv(name) for name in TWITTER_ENV_NAMES}
+    missing = [name for name, value in values.items() if not value]
+    if missing:
+        joined = ", ".join(missing)
+        raise RuntimeError(f"Missing Twitter API credentials: {joined}")
+    return {name: value for name, value in values.items() if value}
+
+
+def _twitter_clients() -> tuple[tweepy.API, tweepy.Client]:
+    global _v1_api, _tweet_client
+    if _v1_api and _tweet_client:
+        return _v1_api, _tweet_client
+
+    env = _twitter_env()
+    auth = tweepy.OAuth1UserHandler(
+        consumer_key=env["CONSUMER_KEY"],
+        consumer_secret=env["CONSUMER_SECRET"],
+        access_token=env["ACCESS_TOKEN"],
+        access_token_secret=env["ACCESS_TOKEN_SECRET"],
+    )
+    _v1_api = tweepy.API(auth)
+    _tweet_client = tweepy.Client(
+        consumer_key=env["CONSUMER_KEY"],
+        consumer_secret=env["CONSUMER_SECRET"],
+        access_token=env["ACCESS_TOKEN"],
+        access_token_secret=env["ACCESS_TOKEN_SECRET"],
+    )
+    return _v1_api, _tweet_client
 
 
 @mcp.tool(description="Get my X/Twitter user info")
 def get_me() -> dict:
+    _, tweet_client = _twitter_clients()
     user = tweet_client.get_me()
     return user.data.data
 
@@ -37,6 +67,7 @@ async def post_twitter(
         post: Annotated[str, "The content of the Twitter post to be created."],
         media_url: Optional[Annotated[str, "URL of media to attach to the post."]] = None
 ) -> dict:
+    v1_api, tweet_client = _twitter_clients()
     if media_url:
         async with httpx.AsyncClient() as client:
             response = await client.get(media_url)
@@ -54,9 +85,9 @@ async def reply_twitter(
         post: Annotated[str, "The content of the reply post."],
         tweet_id: Annotated[str, "The ID of the tweet to reply to."]
 ) -> dict:
+    _, tweet_client = _twitter_clients()
     tweet = tweet_client.create_tweet(
         text=post,
-        quote_tweet_id=tweet_id,
         in_reply_to_tweet_id=tweet_id
     )
     return tweet.data
@@ -68,6 +99,7 @@ def get_timeline(
         start_time: Optional[Annotated[str, "ISO 8601 start time for fetching tweets."]] = None,
         end_time: Optional[Annotated[str, "ISO 8601 end time for fetching tweets."]] = None
 ):
+    _, tweet_client = _twitter_clients()
     tweets = tweet_client.get_home_timeline(
         max_results=count, start_time=start_time, end_time=end_time
     )
@@ -78,6 +110,7 @@ def get_timeline(
 def like_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to like."]
 ) -> dict:
+    _, tweet_client = _twitter_clients()
     response = tweet_client.like(tweet_id)
     return response.data
 
@@ -86,6 +119,7 @@ def like_tweet(
 def unlike_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to unlike."]
 ) -> dict:
+    _, tweet_client = _twitter_clients()
     response = tweet_client.unlike(tweet_id)
     return response.data
 
@@ -94,6 +128,7 @@ def unlike_tweet(
 def retweet_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to retweet."]
 ) -> dict:
+    _, tweet_client = _twitter_clients()
     response = tweet_client.retweet(tweet_id)
     return response.data
 
@@ -102,6 +137,7 @@ def retweet_tweet(
 def unretweet_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to unretweet."]
 ) -> dict:
+    _, tweet_client = _twitter_clients()
     response = tweet_client.unretweet(tweet_id)
     return response.data
 
@@ -110,6 +146,7 @@ def unretweet_tweet(
 def get_user_by_username(
         username: Annotated[str, "The username of the Twitter user."]
 ) -> dict:
+    _, tweet_client = _twitter_clients()
     user = tweet_client.get_user(username=username)
     return user.data.data
 
@@ -118,6 +155,7 @@ def get_user_by_username(
 def get_user_by_id(
         user_id: Annotated[str, "The user ID of the Twitter user."]
 ) -> dict:
+    _, tweet_client = _twitter_clients()
     user = tweet_client.get_user(id=user_id)
     return user.data.data
 
@@ -127,6 +165,9 @@ def search_tweets(
         query: Annotated[str, "The search query string."],
         max_results: Annotated[int, "Maximum number of tweets to return."] = 10
 ) -> list:
+    if xquik_enabled():
+        return search_xquik_tweets(query, max_results)
+    _, tweet_client = _twitter_clients()
     tweets = tweet_client.search_recent_tweets(query=query, max_results=max_results)
     return [tweet.data for tweet in tweets.data]
 
@@ -136,6 +177,9 @@ def get_lasest_tweets_from_user(
         username: Annotated[str, "The username of the Twitter user."],
         max_results: Annotated[int, "Maximum number of tweets to return."] = 5
 ) -> list:
+    if xquik_enabled():
+        return get_xquik_user_tweets(username, max_results)
+    _, tweet_client = _twitter_clients()
     user = tweet_client.get_user(username=username)
     tweets = tweet_client.get_users_tweets(
         id=user.data.id, max_results=max_results
@@ -147,6 +191,7 @@ def get_lasest_tweets_from_user(
 def delete_tweet(
         tweet_id: Annotated[str, "The ID of the tweet to delete."]
 ) -> dict:
+    _, tweet_client = _twitter_clients()
     response = tweet_client.delete_tweet(tweet_id)
     return response.data
 
@@ -155,6 +200,9 @@ def delete_tweet(
 def get_tweet_by_id(
         tweet_id: Annotated[str, "The ID of the tweet to retrieve."]
 ) -> dict:
+    if xquik_enabled():
+        return get_xquik_tweet(tweet_id)
+    _, tweet_client = _twitter_clients()
     tweet = tweet_client.get_tweet(tweet_id)
     return tweet.data
 
@@ -164,6 +212,7 @@ def get_followers(
         username: Annotated[str, "The username of the Twitter user."],
         max_results: Annotated[int, "Maximum number of followers to return."] = 10,
 ) -> list:
+    _, tweet_client = _twitter_clients()
     user = tweet_client.get_user(username=username)
     followers = tweet_client.get_users_followers(
         id=user.data.id, max_results=max_results,
@@ -176,6 +225,7 @@ def get_following(
         username: Annotated[str, "The username of the Twitter user."],
         max_results: Annotated[int, "Maximum number of following to return."] = 10,
 ) -> list:
+    _, tweet_client = _twitter_clients()
     user = tweet_client.get_user(username=username)
     following = tweet_client.get_users_following(
         id=user.data.id, max_results=max_results,
@@ -189,6 +239,9 @@ def search_tweets_by_query(
         max_results: Annotated[int, "Maximum number of tweets to return."] =
         10,
 ) -> list:
+    if xquik_enabled():
+        return search_xquik_tweets(query, max_results)
+    _, tweet_client = _twitter_clients()
     tweets = tweet_client.search_recent_tweets(
         query=query, max_results=max_results,
     )
@@ -200,6 +253,9 @@ def search_all_twitter(
         query: Annotated[str, "The search query string."],
         max_results: Annotated[int, "Maximum number of tweets to return."] = 10,
 ) -> list:
+    if xquik_enabled():
+        return search_xquik_tweets(query, max_results)
+    _, tweet_client = _twitter_clients()
     tweets = tweet_client.search_all_tweets(
         query=query, max_results=max_results,
     )
@@ -211,6 +267,9 @@ def get_user_timeline(
         username: Annotated[str, "The username of the Twitter user."],
         max_results: Annotated[int, "Maximum number of tweets to return."] = 5,
 ) -> list:
+    if xquik_enabled():
+        return get_xquik_user_tweets(username, max_results)
+    _, tweet_client = _twitter_clients()
     user = tweet_client.get_user(username=username)
     tweets = tweet_client.get_users_tweets(
         id=user.data.id, max_results=max_results,
